@@ -54,6 +54,8 @@ NextComposed.propTypes = {
     prefetch: PropTypes.bool,
 };
 
+NextComposed.displayName = 'NextComposed';
+
 Link.propTypes = {
     children: PropTypes.element,
     activeClassName: PropTypes.string,
@@ -70,6 +72,8 @@ Link.propTypes = {
 };
 
 const RouterLink = withRouter(Link);
+
+RouterLink.displayName = 'RouterLink';
 
 const Forward = () => React.forwardRef((props, ref) => (
     <RouterLink {...props} innerRef={ref} />
