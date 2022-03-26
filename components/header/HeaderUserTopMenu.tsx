@@ -115,4 +115,6 @@ const HeaderUserTopMenu = ({ user }) => {
   );
 };
 
+HeaderUserTopMenu.displayName = 'HeaderUserTopMenu';
+
 export default HeaderUserTopMenu;

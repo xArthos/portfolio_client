@@ -161,7 +161,3 @@ const Header = ({ currentUser, loadingCurrentUser, refetchCurrentUser }) => {
 };
 
 export default Header;
-
-function setUpdate(value: any) {
-  throw new Error('Function not implemented.');
-}

@@ -13,13 +13,13 @@ import Section from '../components/Section';
 import Wrapper from '../components/Wrapper';
 
 // Apollo
-import { getUserById } from './utils/userDataUtils';
+import { useGetUserById } from './utils/userDataUtils';
 import { getApolloClient } from './apollo-client';
 
 // class Link extends React.Component<LinkProps> {}
 
 const UserCheck = ({ isPrivateRoute, children }) => {
-    const { data: { user }, loading, refetch } = getUserById('623222d2826ad9c729d5fb1e');
+    const { data: { user }, loading, refetch } = useGetUserById('623222d2826ad9c729d5fb1e');
     console.log(user)
 
     if (loading) return null;

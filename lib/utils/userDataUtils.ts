@@ -42,7 +42,7 @@ export const GET_USER_QUERY = gql`
 // };
 
 // GET USER QUERY
-export const getUserById = (_id) => {
+export const useGetUserById = (_id) => {
   const props = useQuery(GET_USER_QUERY, { variables: { _id }, skip: !_id || _id === null });
   // console.log(props)
   if (!props.data) {
