@@ -35,7 +35,7 @@ NextComposed.propTypes = {
     prefetch: PropTypes.bool,
 };
 
-const Link = (props) => {
+const Link = (props: any) => {
     const {
         activeClassName = 'active',
         router,
@@ -51,7 +51,7 @@ const Link = (props) => {
 
     if (naked) return <NextComposed className={className} ref={innerRef} {...other} />;
 
-    return (<MuiLink component={NextComposed} className={className} ref={innerRef} underline="none" {...other} />);
+    return (<MuiLink component={NextComposed} className={className} ref={innerRef} underline='none' {...other} />);
 };
 
 Link.displayName = 'Link';
@@ -73,10 +73,6 @@ Link.propTypes = {
 
 const RouterLink = withRouter(Link);
 
-const Forward = () => React.forwardRef((props, ref) => (
-    <RouterLink {...props} innerRef={ref} />
-));
-
-Forward.displayName = 'Forward';
-
-export default Forward;
+export default React.forwardRef(function forward (props, ref) {
+    return <RouterLink {...props} innerRef={ref} />;
+});;
