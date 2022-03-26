@@ -14,7 +14,7 @@ import Wrapper from '../components/Wrapper';
 
 // Apollo
 import { useGetUserById } from './utils/userDataUtils';
-import { getApolloClient } from './apollo-client';
+import { useGetApolloClient } from './apollo-client';
 
 // class Link extends React.Component<LinkProps> {}
 
@@ -70,7 +70,7 @@ const withApollo = (PageComponent: React.ElementType, { ssr = true, isPrivateRou
 
     const WithApollo = ({ apolloClient, apolloState, ...pageProps }) => {
         // Apollo Client
-        const client = apolloClient || getApolloClient(pageProps);
+        const client = apolloClient || useGetApolloClient(pageProps);
 
         return (
             <ApolloProvider client={client}>

@@ -44,4 +44,6 @@ const NextAvatar = React.forwardRef((props: any, ref) => {
   );
 });
 
+NextAvatar.displayName = 'NextAvatar';
+
 export default NextAvatar;
