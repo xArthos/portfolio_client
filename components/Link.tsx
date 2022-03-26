@@ -16,8 +16,6 @@ interface ICustomRoute {
     children: Element;
 }
 
-NextLink.displayName = 'NextLink';
-
 const NextComposed: FC<ICustomRoute> = React.forwardRef((props, ref: any) => {
     const { as, href, prefetch, ...other } = props;
     const node = useRef<HTMLAnchorElement>(ref);
@@ -74,8 +72,6 @@ Link.propTypes = {
 };
 
 const RouterLink = withRouter(Link);
-
-RouterLink.displayName = 'RouterLink';
 
 const Forward = () => React.forwardRef((props, ref) => (
     <RouterLink {...props} innerRef={ref} />
