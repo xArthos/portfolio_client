@@ -16,6 +16,8 @@ interface ICustomRoute {
     children: Element;
 }
 
+NextLink.displayName = 'NextLink';
+
 const NextComposed: FC<ICustomRoute> = React.forwardRef((props, ref: any) => {
     const { as, href, prefetch, ...other } = props;
     const node = useRef<HTMLAnchorElement>(ref);
@@ -28,6 +30,12 @@ const NextComposed: FC<ICustomRoute> = React.forwardRef((props, ref: any) => {
 });
 
 NextComposed.displayName = 'NextComposed';
+
+NextComposed.propTypes = {
+    as: PropTypes.string,
+    href: PropTypes.string,
+    prefetch: PropTypes.bool,
+};
 
 const Link = (props) => {
     const {
@@ -49,12 +57,6 @@ const Link = (props) => {
 };
 
 Link.displayName = 'Link';
-
-NextComposed.propTypes = {
-    as: PropTypes.string,
-    href: PropTypes.string,
-    prefetch: PropTypes.bool,
-};
 
 Link.propTypes = {
     children: PropTypes.element,
