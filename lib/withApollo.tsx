@@ -69,8 +69,11 @@ const withApollo = (PageComponent: React.ElementType, { ssr = true, isPrivateRou
     });
 
     const WithApollo = ({ apolloClient, apolloState, ...pageProps }) => {
+        const apolloClientState = apolloClient;
+        const apolloClientHook = useGetApolloClient(pageProps);
+
         // Apollo Client
-        const client = apolloClient || useGetApolloClient(pageProps);
+        const client = apolloClient ? apolloClientState : apolloClientHook;
 
         return (
             <ApolloProvider client={client}>

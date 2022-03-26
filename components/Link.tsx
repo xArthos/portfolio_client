@@ -46,6 +46,8 @@ const Link = (props) => {
     return (<MuiLink component={NextComposed} className={className} ref={innerRef} underline="none" {...other} />);
 };
 
+Link.displayName = 'Link';
+
 NextComposed.propTypes = {
     as: PropTypes.string,
     href: PropTypes.string,
@@ -69,6 +71,10 @@ Link.propTypes = {
 
 const RouterLink = withRouter(Link);
 
-export default React.forwardRef((props, ref) => (
+const Forward = () => React.forwardRef((props, ref) => (
     <RouterLink {...props} innerRef={ref} />
 ));
+
+Forward.displayName = 'Forward';
+
+export default Forward;
