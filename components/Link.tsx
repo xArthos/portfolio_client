@@ -75,4 +75,4 @@ const RouterLink = withRouter(Link);
 
 export default React.forwardRef(function forward (props, ref) {
     return <RouterLink {...props} innerRef={ref} />;
-});;
+});
