@@ -27,6 +27,8 @@ const NextComposed: FC<ICustomRoute> = React.forwardRef((props, ref: any) => {
     );
 });
 
+NextComposed.displayName = 'NextComposed';
+
 const Link = (props) => {
     const {
         activeClassName = 'active',
@@ -53,8 +55,6 @@ NextComposed.propTypes = {
     href: PropTypes.string,
     prefetch: PropTypes.bool,
 };
-
-NextComposed.displayName = 'NextComposed';
 
 Link.propTypes = {
     children: PropTypes.element,
