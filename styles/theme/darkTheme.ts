@@ -119,6 +119,8 @@ const darkTheme: ThemeOptions = {
             styleOverrides: {
                 body: {
                     background: 'url("/background.jpg")',
+                    backgroundSize: 'cover',
+                    backgroundAttachment: 'fixed'
                 }
             }
         }
