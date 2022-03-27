@@ -1,9 +1,11 @@
 // Modules
-const withPlugins = require('next-compose-plugins');
-const optimizedImages = require('next-optimized-images');
-const withCustomBabelConfigFile = require('next-plugin-custom-babel-config');
-const config = require('./config.d.ts');
-const path = require('path');
+import path from 'path';
+import withPlugins from 'next-compose-plugins';
+import optimizedImages from 'next-optimized-images';
+import withCustomBabelConfigFile from 'next-plugin-custom-babel-config';
+
+// Config
+import config from './config.d.ts';
 
 module.exports = withPlugins(
     [
