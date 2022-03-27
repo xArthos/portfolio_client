@@ -34,21 +34,27 @@ const Wrapper = ({
     currentUser,
     refetchCurrentUser,
     loadingCurrentUser,
-    meta = { title: 'Portfolio' },
+    meta = { title: 'Giampaolo\'s Portfolio' },
     children = <Header currentUser={currentUser} refetchCurrentUser={refetchCurrentUser} loadingCurrentUser={loadingCurrentUser} />
 }) => {
     const classes = useStyles();
 
     return (
         <Box className={classes.body}>
+            {/* Title of the page */}
             <Head>
                 <title>{meta.title}</title>
             </Head>
 
+            {/* Header - NavBar */}
             <Header currentUser={currentUser} refetchCurrentUser={refetchCurrentUser} loadingCurrentUser={loadingCurrentUser} />
 
-            <Box className={classes.container}>{children}</Box>
+            {/* Body */}
+            <Box className={classes.container}>
+                {children}
+            </Box>
 
+            {/* Footer */}
             <Footer />
         </Box>
     );

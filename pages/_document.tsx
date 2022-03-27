@@ -1,28 +1,34 @@
 // Modules
 import * as React from 'react';
 import createEmotionServer from '@emotion/server/create-instance';
-import Document, { Html, Head, Main, NextScript } from 'next/document';
+import Document, { Html, Head, Main, NextScript, DocumentContext } from 'next/document';
 
 // Utils
 import createEmotionCache from '../utils/createEmotionCache';
 
-export default class MyDocument extends Document {
-    render() {
-        return (
-            <Html lang="en">
-                <Head>
-                    <link
-                        rel="stylesheet"
-                        href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
-                    />
-                </Head>
-                <body>
-                    <Main />
-                    <NextScript />
-                </body>
-            </Html>
-        );
-    };
+class MyDocument extends Document {
+    static async getInitialProps(ctx: DocumentContext) {
+        const initialProps = await Document.getInitialProps(ctx)
+
+        return initialProps
+    }
+
+    // render() {
+    //     return (
+    //         <Html lang="en">
+    //             <Head>
+    //                 <link
+    //                     rel="stylesheet"
+    //                     href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
+    //                 />
+    //             </Head>
+    //             <body>
+    //                 <Main />
+    //                 <NextScript />
+    //             </body>
+    //         </Html>
+    //     );
+    // };
 };
 
 // `getInitialProps` belongs to `_document` (instead of `_app`),
@@ -83,7 +89,9 @@ MyDocument.getInitialProps = async (ctx) => {
         // Styles fragment is rendered after the app and page rendering finish.
         styles: [
             ...React.Children.toArray(initialProps.styles),
-            ...emotionStyleTags,
-        ],
+            ...emotionStyleTags
+        ]
     };
 };
+
+export default MyDocument;

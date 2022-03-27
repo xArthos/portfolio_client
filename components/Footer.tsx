@@ -8,7 +8,7 @@ import { makeStyles } from '@mui/styles';
 
 const useStyles = makeStyles(({ palette }) => ({
     footer: {
-        backgroundColor: palette.secondary.main,
+        backgroundColor: palette.primary.main,
         padding: '50px 23px',
         maxWidth: '100%',
         display: 'flex',
@@ -22,9 +22,9 @@ const Footer = () => {
     // TODO: #2 Add a custom footer with Material-UI
     return (
         <footer className={classes.footer}>
-            <Grid container spacing={4} direction='column' >
+            <Grid container spacing={4} direction='column' alignItems='center'>
                 <Grid item>
-                    <Typography>
+                    <Typography variant='h6'>
                         Giampaolo Nico Lo Cascio &copy; {new Date().getFullYear()}
                     </Typography>
                 </Grid>

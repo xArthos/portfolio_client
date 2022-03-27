@@ -1,9 +1,9 @@
 // Modules
 import { ThemeOptions } from '@mui/material/styles';
 
-const lightThemeOptions: ThemeOptions = {
+const darkTheme: ThemeOptions = {
     palette: {
-        mode: 'light',
+        mode: 'dark',
         primary: {
             light: '#ffc100',
             main: '#ff9a00',
@@ -41,7 +41,7 @@ const lightThemeOptions: ThemeOptions = {
             contrastText: '#22bb33'
         },
         text: {
-            primary: '#101010',
+            primary: '#ffffff',
             secondary: '#696969',
             disabled: '#C0C0C0'
         },
@@ -65,28 +65,28 @@ const lightThemeOptions: ThemeOptions = {
             700: '#5b5b5b',
             800: '#5b5b5b',
             900: '#444444',
-            A100: '',
-            A200: '',
-            A400: '',
-            A700: ''
+            // A100: '',
+            // A200: '',
+            // A400: '',
+            // A700: ''
         },
-        divider: '',
+        // divider: '',
         action: {
-            active: '',
-            hover: '',
+            // active: '',
+            hover: '#ff6600',
             hoverOpacity: 1,
-            selected: '',
+            selected: '#f8f8fa', // <--- Test
             selectedOpacity: 1,
-            disabled: '',
+            // disabled: '',
             disabledOpacity: 1,
-            disabledBackground: '',
-            focus: '',
+            // disabledBackground: '',
+            // focus: '',
             focusOpacity: 1,
             activatedOpacity: 1
         },
         background: {
-            default: '#20213b',
-            paper: ''
+            default: 'transparent',
+            // paper: ''
         }
     },
     spacing: [0, 4, 8, 16, 32, 64],
@@ -101,18 +101,28 @@ const lightThemeOptions: ThemeOptions = {
     },
     typography: {
         fontFamily: [
+            'roboto',
+            'sans-serif',
             '-apple-system',
             'BlinkMacSystemFont',
             '"Segoe UI"',
             'Roboto',
             '"Helvetica Neue"',
             'Arial',
-            'sans-serif',
             '"Apple Color Emoji"',
             '"Segoe UI Emoji"',
-            '"Segoe UI Symbol"',
+            '"Segoe UI Symbol"'
         ].join(',')
+    },
+    components: {
+        MuiCssBaseline: {
+            styleOverrides: {
+                body: {
+                    background: 'url("/background.jpg")',
+                }
+            }
+        }
     }
 };
 
-export default lightThemeOptions;
+export default darkTheme;

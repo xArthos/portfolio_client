@@ -49,7 +49,6 @@ const HeaderUserTopMenu = ({ user }) => {
   };
 
   const handleLogout = async () => {
-
     setAnchorEl(null);
     Router.push('/login');
   };
@@ -83,7 +82,7 @@ const HeaderUserTopMenu = ({ user }) => {
           </MenuItem>
         </>
         :
-        'Test'
+        null
         // <Tooltip title='Click to open menu'>
         //   <Chip
         //     avatar={<NextAvatar data={user} src={user && user.avatarUrl} placeholder='/avatar_placeholder.svg' />}

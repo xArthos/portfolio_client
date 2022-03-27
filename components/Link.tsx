@@ -1,78 +1,53 @@
 // Modules
-import clsx from 'clsx';
-import NextLink from 'next/link';
 import PropTypes from 'prop-types';
-import React, { FC, useRef } from 'react';
-import { withRouter } from 'next/router';
+import NextLink, { LinkProps } from 'next/link';
+import { HTMLProps, FC } from 'react';
 
 // UI
-import MuiLink from '@mui/material/Link';
+import { makeStyles } from '@mui/styles';
 
-interface ICustomRoute {
-    as: string,
-    href: string,
-    prefetch: any,
-    color: string,
-    children: Element;
-}
+const useStyles = makeStyles(({ palette }) => ({
+    link: {
+        textDecoration: 'none',
+        color: palette.primary.main,
+        transition: 'color 0.3s ease',
+        '&:hover': {
+            color: palette.secondary.main,
+            cursor: 'pointer'
+        }
+    }
+}));
 
-const NextComposed: FC<ICustomRoute> = React.forwardRef((props, ref: any) => {
-    const { as, href, prefetch, ...other } = props;
-    const node = useRef<HTMLAnchorElement>(ref);
+const Link: FC<LinkProps & HTMLProps<HTMLAnchorElement>> = ({
+    as, children, href, replace, scroll, shallow, passHref, ...rest
+}) => {
+    const classes = useStyles();
 
     return (
-        <NextLink href={href} prefetch={prefetch} as={as}>
-            <a ref={node} {...other} />
+        <NextLink
+            as={as}
+            href={href}
+            passHref={passHref}
+            replace={replace}
+            scroll={scroll}
+            shallow={shallow}
+        >
+            <a {...rest} className={classes.link}>
+                {children}
+            </a>
         </NextLink>
-    );
-});
-
-NextComposed.displayName = 'NextComposed';
-
-NextComposed.propTypes = {
-    as: PropTypes.string,
-    href: PropTypes.string,
-    prefetch: PropTypes.bool,
-};
-
-const Link = (props: any) => {
-    const {
-        activeClassName = 'active',
-        router,
-        className: classNameProps,
-        innerRef,
-        naked,
-        ...other
-    } = props;
-
-    const className = clsx(classNameProps, {
-        [activeClassName]: router.pathname === props.href && activeClassName,
-    });
-
-    if (naked) return <NextComposed className={className} ref={innerRef} {...other} />;
-
-    return (<MuiLink component={NextComposed} className={className} ref={innerRef} underline='none' {...other} />);
+    )
 };
 
 Link.displayName = 'Link';
 
 Link.propTypes = {
     children: PropTypes.element,
-    activeClassName: PropTypes.string,
     as: PropTypes.string,
     className: PropTypes.string,
     href: PropTypes.string,
-    innerRef: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
-    naked: PropTypes.bool,
     onClick: PropTypes.func,
-    prefetch: PropTypes.bool,
-    router: PropTypes.shape({
-        pathname: PropTypes.string.isRequired,
-    }).isRequired
+    prefetch: PropTypes.bool
 };
 
-const RouterLink = withRouter(Link);
-
-export default React.forwardRef(function forward (props, ref) {
-    return <RouterLink {...props} innerRef={ref} />;
-});
+export default Link;

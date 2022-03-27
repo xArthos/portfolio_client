@@ -53,12 +53,12 @@ const Section = ({
         <Container className={clsx(classes.container, containerClass)}>
             {header ?
                 <>
-                    <Typography variant="h2" className={headerClass}>
+                    <Typography variant='h2' className={headerClass}>
                         {header}
                     </Typography>
 
                     {subtitle ?
-                        <Typography variant="subtitle1" className={classes.headerContainer}>
+                        <Typography variant='subtitle1' className={classes.headerContainer}>
                             {subtitle}
                         </Typography> : null
                     }

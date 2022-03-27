@@ -106,3 +106,6 @@ dist
 # VsCode
 *.vscode
 .vercel
+
+# Misc
+unused/

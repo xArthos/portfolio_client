@@ -10,8 +10,13 @@ import IconButton from '@mui/material//IconButton';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { makeStyles } from '@mui/styles';
 
+// Media
+import ArthosLogo from '../../media/logo/logo-m.svg';
+
 // Components
+import Link from '../Link';
 import NextAvatar from '../NextAvatar';
+import ThemeSwitcher from '../ThemeSwitcher';
 import HeaderUserTopMenu from './HeaderUserTopMenu';
 import HeaderLoginSignUp from './HeaderLoginSignUp';
 
@@ -32,10 +37,15 @@ const useStyles = makeStyles(({ palette }) => ({
     }
   },
   headerLogo: {
-    height: 35,
+    height: 65,
+    width: 60,
     '@media (max-width:653px)': {
       height: 40,
       width: 40
+    },
+    '& image': {
+      height: 'inherit',
+      width: 'inherit'
     }
   },
   mobileMenuDivider: {
@@ -88,12 +98,18 @@ const Header = ({ currentUser, loadingCurrentUser, refetchCurrentUser }) => {
     <header className={classes.header}>
       <Container maxWidth='lg' style={isMobile ? null : { paddingRight: 0 }}>
         <Grid container alignItems='center' justifyContent='space-between' direction='row' wrap='nowrap'>
-          {/* Avatar, Whats New */}
-          {/* <Grid container item wrap='nowrap' alignItems='center'>
+          {/* Avatar, Theme Switcher */}
+          <Grid container item wrap='nowrap' alignItems='center'>
             <Grid item className={classes.grid}>
-
+              <Link href={'/'}>
+                <ArthosLogo className={classes.headerLogo} />
+              </Link>
             </Grid>
-          </Grid> */}
+
+            <Grid item className={classes.grid}>
+              <ThemeSwitcher />
+            </Grid>
+          </Grid>
 
           {/* Control Panel */}
           <Grid

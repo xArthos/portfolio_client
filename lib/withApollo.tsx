@@ -20,7 +20,7 @@ import { useGetApolloClient } from './apollo-client';
 
 const UserCheck = ({ isPrivateRoute, children }) => {
     const { data: { user }, loading, refetch } = useGetUserById('623222d2826ad9c729d5fb1e');
-    console.log(user)
+    console.log(user, loading, isPrivateRoute)
 
     if (loading) return null;
     if (isPrivateRoute && !user) {
@@ -34,8 +34,8 @@ const UserCheck = ({ isPrivateRoute, children }) => {
                     containerClass={undefined}
                     headerClass={undefined}
                     gridClass={undefined}
-                    maxWidth={''}
-                    justify={''}
+                    maxWidth=''
+                    justify=''
                     spacing={undefined}
                 >
                     <Grid item xs={12} sm={6} md={5}>

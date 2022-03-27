@@ -1,7 +1,7 @@
 // Modules
 import { ThemeOptions } from '@mui/material/styles';
 
-const lightThemeOptions: ThemeOptions = {
+const lightTheme: ThemeOptions = {
     palette: {
         mode: 'light',
         primary: {
@@ -41,7 +41,7 @@ const lightThemeOptions: ThemeOptions = {
             contrastText: '#22bb33'
         },
         text: {
-            primary: '#ffffff',
+            primary: '#101010',
             secondary: '#696969',
             disabled: '#C0C0C0'
         },
@@ -65,28 +65,28 @@ const lightThemeOptions: ThemeOptions = {
             700: '#5b5b5b',
             800: '#5b5b5b',
             900: '#444444',
-            A100: '',
-            A200: '',
-            A400: '',
-            A700: ''
+            // A100: '',
+            // A200: '',
+            // A400: '',
+            // A700: ''
         },
-        divider: '',
+        // divider: '',
         action: {
-            active: '',
-            hover: '',
+            // active: '',
+            hover: '#ff6600',
             hoverOpacity: 1,
-            selected: '#f8f8fa', // <--- Test
+            // selected: '',
             selectedOpacity: 1,
-            disabled: '',
+            // disabled: '',
             disabledOpacity: 1,
-            disabledBackground: '',
-            focus: '',
+            // disabledBackground: '',
+            // focus: '',
             focusOpacity: 1,
             activatedOpacity: 1
         },
         background: {
-            default: '#20213b',
-            paper: ''
+            default: '#ffffff',
+            paper: '#ffa662'
         }
     },
     spacing: [0, 4, 8, 16, 32, 64],
@@ -101,18 +101,19 @@ const lightThemeOptions: ThemeOptions = {
     },
     typography: {
         fontFamily: [
+            'roboto',
+            'sans-serif',
             '-apple-system',
             'BlinkMacSystemFont',
             '"Segoe UI"',
             'Roboto',
             '"Helvetica Neue"',
             'Arial',
-            'sans-serif',
             '"Apple Color Emoji"',
             '"Segoe UI Emoji"',
-            '"Segoe UI Symbol"',
+            '"Segoe UI Symbol"'
         ].join(',')
     }
 };
 
-export default lightThemeOptions;
+export default lightTheme;
