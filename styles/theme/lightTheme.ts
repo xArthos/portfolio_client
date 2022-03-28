@@ -85,7 +85,7 @@ const lightTheme: ThemeOptions = {
             activatedOpacity: 1
         },
         background: {
-            default: '#ffffff',
+            default: 'transparent',
             paper: '#ffa662'
         }
     },
@@ -113,6 +113,17 @@ const lightTheme: ThemeOptions = {
             '"Segoe UI Emoji"',
             '"Segoe UI Symbol"'
         ].join(',')
+    },
+    components: {
+        MuiCssBaseline: {
+            styleOverrides: {
+                body: {
+                    background: 'url("/background-light.png")',
+                    backgroundSize: 'cover',
+                    backgroundAttachment: 'fixed'
+                }
+            }
+        }
     }
 };
 
