@@ -13,19 +13,20 @@ import Section from '../components/Section';
 import Wrapper from '../components/Wrapper';
 
 // Apollo
-import { useGetUserById } from './utils/userDataUtils';
 import { useGetApolloClient } from './apollo-client';
+import { useGetCurrentUser } from './utils/userDataUtils';
 
 // class Link extends React.Component<LinkProps> {}
 
 const UserCheck = ({ isPrivateRoute, children }) => {
-    const { data: { user }, loading, refetch } = useGetUserById('623222d2826ad9c729d5fb1e');
-    console.log(user, loading, isPrivateRoute);
+    // Add a function that takes login cookies
+    const { data: { currentUser }, loading, refetch } = useGetCurrentUser();
+    console.log(currentUser);
 
     if (loading) return null;
-    if (isPrivateRoute && !user) {
+    if (isPrivateRoute && !currentUser) {
         return (
-            <Wrapper currentUser={user} refetchCurrentUser={refetch} loadingCurrentUser={loading}>
+            <Wrapper currentUser={currentUser} refetchCurrentUser={refetch} loadingCurrentUser={loading}>
                 <Section
                     header={'You must be logged in to view this page. If you don\'t have an account click on Sign up and create one for free.'}
                     alignItems='flex-start'
@@ -59,7 +60,7 @@ const UserCheck = ({ isPrivateRoute, children }) => {
             </Wrapper>
         );
     } else {
-        return React.cloneElement(children, { currentUser: user, loadingCurrentUser: loading, refetchCurrentUser: refetch });
+        return React.cloneElement(children, { currentUser: currentUser, loadingCurrentUser: loading, refetchCurrentUser: refetch });
     };
 };
 
