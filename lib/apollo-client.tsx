@@ -5,6 +5,7 @@ import isEqual from 'lodash/isEqual';
 import { onError } from '@apollo/link-error';
 import { useMemo } from 'react';
 import { AppProps } from 'next/app';
+import { setContext } from '@apollo/client/link/context';
 import { createUploadLink } from 'apollo-upload-client';
 import { IncomingHttpHeaders } from 'http';
 import { ApolloLink, ApolloClient, InMemoryCache, NormalizedCacheObject } from '@apollo/client';
@@ -28,6 +29,29 @@ export const createApolloClient = (headers: IncomingHttpHeaders | null = null) =
         return response;
     };
 
+    const httpLink = createUploadLink({
+        uri: 'http://localhost:4000/graphql', // 'https://serverxarthos.vercel.app/graphql/',
+        // Make sure that CORS and cookies work
+        fetchOptions: {
+            mode: 'cors' // 'no-cors'
+        },
+        credentials: 'include',
+        fetch: enhancedFetch
+    });
+
+    const authLink = setContext((_, { headers }) => {
+        console.log(localStorage)
+        // get the authentication token from local storage if it exists
+        const token = localStorage.getItem('content');
+        // return the headers to the context so httpLink can read them
+        return {
+            headers: {
+                ...headers,
+                authorization: token ? `Bearer ${token}` : "",
+            }
+        }
+    });
+
     return new ApolloClient({
         ssrMode: typeof window === 'undefined',
         link: ApolloLink.from([
@@ -44,20 +68,7 @@ export const createApolloClient = (headers: IncomingHttpHeaders | null = null) =
                     )
             }),
             // This uses apollo-link-http under the hood, so all the options here come from that package
-            createUploadLink({
-                uri: 'https://serverxarthos.vercel.app/graphql/',
-                // Make sure that CORS and cookies work
-                fetchOptions: {
-                    mode: 'cors' // 'no-cors'
-                },
-                credentials: 'include',
-                fetch: enhancedFetch,
-                // headers: {
-                //     'Content-Type': 'application/json',
-                //     'Access-Control-Allow-Origin': 'http://localhost:3000',
-                //     'Access-Control-Allow-Credentials': true
-                // }
-            })
+            authLink.concat(httpLink)
         ]),
         cache: new InMemoryCache()
     });
@@ -124,3 +135,76 @@ export const useGetApolloClient = (pageProps: AppProps['pageProps']) => {
 
     return store;
 };
+
+// // Use Apollo for (Incremental) Static Site Generation - TO DEVELOP
+// const client = initializeApollo()
+
+// export const getStaticPaths = async () => {
+//     // here we use the Apollo client to retrieve all products
+//     const {
+//         data: { allProducts }
+//     } = await client.query<AllProductsQuery>({ query: ALL_PRODUCTS_QUERY });
+//     const ids = allProducts?.map((product) => product?.id);
+//     const paths = ids?.map((id) => ({ params: { id } }));
+
+//     return {
+//         paths,
+//         fallback: true
+//     };
+// };
+
+// interface IStaticProps {
+//     params: { id: string | undefined }
+// };
+
+// export const getStaticProps = async ({ params: { id } }: IStaticProps) => {
+//     if (!id) {
+//         throw new Error('Parameter is invalid')
+//     }
+
+//     try {
+//         const {
+//             data: { Product: product },
+//         } = await client.query({
+//             query: PRODUCT_QUERY,
+//             variables: { id }
+//         });
+
+//         return {
+//             props: {
+//                 id: product?.id,
+//                 title: product?.name
+//             },
+//             revalidate: 60
+//         };
+//     } catch (err) {
+//         return {
+//             notFound: true
+//         };
+//     };
+// };
+
+// // Use Apollo for Server-Side Rendering
+// export const getServerSideProps = async (
+//     context: GetServerSidePropsContext
+// ) => {
+//     // pass along the headers for authentication
+//     const client = initializeApollo({ headers: context?.req?.headers })
+//     try {
+//         await client.query<AllOrdersQuery>({
+//             query: ALL_ORDERS_QUERY
+//         });
+
+//         return addApolloState(client, {
+//             props: {}
+//         });
+//     } catch {
+//         return {
+//             props: {},
+//             redirect: {
+//                 destination: '/signin',
+//                 permanent: false
+//             }
+//         };
+//     };
+// };
