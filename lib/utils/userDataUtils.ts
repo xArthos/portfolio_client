@@ -2,8 +2,15 @@
 import gql from 'graphql-tag';
 import { useQuery } from '@apollo/react-hooks';
 
+// Mutations Schemas
+export const login = gql`
+    mutation login($email: Email!, $password: Password!) {
+        logIn(email: $email, password: $password)
+    }
+`;
+
 // Queries Schemas
-export const GET_CURRENT_USER = gql`
+export const getCurrentUserQuery = gql`
   query getCurrentUser {
     currentUser {
       _id
@@ -30,7 +37,7 @@ export const GET_CURRENT_USER = gql`
   }
 `;
 
-export const GET_USER_QUERY = gql`
+export const getUserQuery = gql`
   query getUserById($_id: ObjectId!) {
     user(_id: $_id) {
       _id
@@ -62,11 +69,10 @@ export const GET_USER_QUERY = gql`
 
 // GET CURRENT USER
 export const useGetCurrentUser = () => {
-  const props = useQuery(GET_CURRENT_USER);
-  console.log(props);
+  const props = useQuery(getCurrentUserQuery);
 
   if (!props.data) {
-    props.data = { currentUser: {} };
+    props.data = { currentUser: undefined };
   };
 
   return props;
@@ -74,8 +80,8 @@ export const useGetCurrentUser = () => {
 
 // GET USER QUERY
 export const useGetUserById = (_id: any) => {
-  const props = useQuery(GET_USER_QUERY, { variables: { _id }, skip: !_id || _id === null });
-  // console.log(props)
+  const props = useQuery(getUserQuery, { variables: { _id }, skip: !_id || _id === null });
+
   if (!props.data) {
     props.data = { user: {} };
   };

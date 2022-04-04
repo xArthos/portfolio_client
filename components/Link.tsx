@@ -42,7 +42,10 @@ const Link: FC<LinkProps & HTMLProps<HTMLAnchorElement>> = ({
 Link.displayName = 'Link';
 
 Link.propTypes = {
-    children: PropTypes.element,
+    children: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.element
+    ]),
     as: PropTypes.string,
     className: PropTypes.string,
     href: PropTypes.string,

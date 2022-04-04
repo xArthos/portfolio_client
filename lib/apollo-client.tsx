@@ -6,11 +6,37 @@ import { onError } from '@apollo/link-error';
 import { useMemo } from 'react';
 import { AppProps } from 'next/app';
 import { setContext } from '@apollo/client/link/context';
+import { ParsedUrlQuery } from 'querystring';
 import { createUploadLink } from 'apollo-upload-client';
-import { IncomingHttpHeaders } from 'http';
+import { NextApiRequestCookies } from 'next/dist/server/api-utils';
+import { GetServerSidePropsResult, PreviewData } from 'next';
+import { IncomingHttpHeaders, IncomingMessage, ServerResponse } from 'http';
 import { ApolloLink, ApolloClient, InMemoryCache, NormalizedCacheObject } from '@apollo/client';
 
-const APOLLO_STATE_PROP_NAME = '__APOLLO_STATE__';
+// Apollo
+import { getCurrentUserQuery } from './utils/userDataUtils';
+
+// type CustomGetServerSideProps<
+//     P extends { [key: string]: any } = { [key: string]: any },
+//     Q extends ParsedUrlQuery = ParsedUrlQuery
+//     > = (context: GetServerSidePropsContext<Q>) => Promise<GetServerSidePropsResult<P>>
+
+type GetServerSidePropsContext<Q extends ParsedUrlQuery = ParsedUrlQuery> = {
+    req: IncomingMessage & {
+        cookies: NextApiRequestCookies
+    }
+    res: ServerResponse
+    params?: Q
+    query: ParsedUrlQuery
+    preview?: boolean
+    previewData?: PreviewData
+    resolvedUrl: string
+    locale: string // This is where the magic happens.
+    locales?: string[]
+    defaultLocale?: string
+}
+
+const APOLLO_STATE_PROP_NAME = 'devArthosApolloState';
 
 let apolloClient: ApolloClient<NormalizedCacheObject> | undefined;
 
@@ -23,14 +49,15 @@ export const createApolloClient = (headers: IncomingHttpHeaders | null = null) =
                 ...init.headers,
                 'Access-Control-Allow-Origin': '*',
                 // here we pass the cookie along for each request
-                Cookie: headers?.cookie ?? '',
-            },
+                Cookie: headers?.cookie ?? ''
+            }
         });
+
         return response;
     };
 
     const httpLink = createUploadLink({
-        uri: 'http://localhost:4000/graphql', // 'https://serverxarthos.vercel.app/graphql/',
+        uri: 'https://serverxarthos.vercel.app/graphql/', //'http://localhost:4000/graphql',
         // Make sure that CORS and cookies work
         fetchOptions: {
             mode: 'cors' // 'no-cors'
@@ -40,16 +67,16 @@ export const createApolloClient = (headers: IncomingHttpHeaders | null = null) =
     });
 
     const authLink = setContext((_, { headers }) => {
-        console.log(localStorage)
         // get the authentication token from local storage if it exists
-        const token = localStorage.getItem('content');
+        const token = localStorage.getItem('devArthosPortfolio');
+
         // return the headers to the context so httpLink can read them
         return {
             headers: {
                 ...headers,
-                authorization: token ? `Bearer ${token}` : "",
+                authorization: token ? `Bearer ${token}` : ''
             }
-        }
+        };
     });
 
     return new ApolloClient({
@@ -57,10 +84,11 @@ export const createApolloClient = (headers: IncomingHttpHeaders | null = null) =
         link: ApolloLink.from([
             onError(({ graphQLErrors, networkError }) => {
                 if (graphQLErrors)
-                    graphQLErrors.forEach(({ message, locations, path }) =>
+                    graphQLErrors.forEach(({ message, locations, path }) => {
                         console.log(
                             `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`
-                        )
+                        );
+                    }
                     )
                 if (networkError)
                     console.log(
@@ -130,17 +158,17 @@ export const addApolloState = (
 };
 
 export const useGetApolloClient = (pageProps: AppProps['pageProps']) => {
-    const state = pageProps[APOLLO_STATE_PROP_NAME]
+    const state = pageProps[APOLLO_STATE_PROP_NAME];
     const store = useMemo(() => initializeApollo({ initialState: state }), [state]);
 
     return store;
 };
 
-// // Use Apollo for (Incremental) Static Site Generation - TO DEVELOP
-// const client = initializeApollo()
+// Use Apollo for (Incremental) Static Site Generation - TO DEVELOP
+const client = initializeApollo()
 
 // export const getStaticPaths = async () => {
-//     // here we use the Apollo client to retrieve all products
+//     // here we use the Apollo client to retrieve the currentUser
 //     const {
 //         data: { allProducts }
 //     } = await client.query<AllProductsQuery>({ query: ALL_PRODUCTS_QUERY });
@@ -153,58 +181,58 @@ export const useGetApolloClient = (pageProps: AppProps['pageProps']) => {
 //     };
 // };
 
-// interface IStaticProps {
-//     params: { id: string | undefined }
-// };
+interface IStaticProps {
+    params: { id: string | undefined }
+};
 
-// export const getStaticProps = async ({ params: { id } }: IStaticProps) => {
-//     if (!id) {
-//         throw new Error('Parameter is invalid')
-//     }
+export const getStaticProps = async ({ params: { id } }: IStaticProps) => {
+    if (!id) {
+        throw new Error('Parameter is invalid')
+    };
 
-//     try {
-//         const {
-//             data: { Product: product },
-//         } = await client.query({
-//             query: PRODUCT_QUERY,
-//             variables: { id }
-//         });
+    try {
+        const {
+            data: { Product: product },
+        } = await client.query({
+            query: getCurrentUserQuery,
+            variables: { id }
+        });
 
-//         return {
-//             props: {
-//                 id: product?.id,
-//                 title: product?.name
-//             },
-//             revalidate: 60
-//         };
-//     } catch (err) {
-//         return {
-//             notFound: true
-//         };
-//     };
-// };
+        return {
+            props: {
+                id: product?.id,
+                title: product?.name
+            },
+            revalidate: 60
+        };
+    } catch (err) {
+        return {
+            notFound: true
+        };
+    };
+};
 
-// // Use Apollo for Server-Side Rendering
-// export const getServerSideProps = async (
-//     context: GetServerSidePropsContext
-// ) => {
-//     // pass along the headers for authentication
-//     const client = initializeApollo({ headers: context?.req?.headers })
-//     try {
-//         await client.query<AllOrdersQuery>({
-//             query: ALL_ORDERS_QUERY
-//         });
+// Use Apollo for Server-Side Rendering
+export const getServerSideProps = async (
+    context: GetServerSidePropsContext
+) => {
+    // pass along the headers for authentication
+    const client = initializeApollo({ headers: context?.req?.headers })
+    try {
+        await client.query({
+            query: getCurrentUserQuery
+        });
 
-//         return addApolloState(client, {
-//             props: {}
-//         });
-//     } catch {
-//         return {
-//             props: {},
-//             redirect: {
-//                 destination: '/signin',
-//                 permanent: false
-//             }
-//         };
-//     };
-// };
+        return addApolloState(client, {
+            props: {}
+        });
+    } catch {
+        return {
+            props: {},
+            redirect: {
+                destination: '/signin',
+                permanent: false
+            }
+        };
+    };
+};

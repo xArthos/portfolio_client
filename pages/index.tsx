@@ -1,3 +1,6 @@
+// UI
+import Typography from '@mui/material/Typography';
+
 // Components
 import Link from '../components/Link';
 import Section from '../components/Section';
@@ -20,8 +23,16 @@ export default withApollo(({ currentUser, refetchCurrentUser, loadingCurrentUser
           <>
             this site is still in development, you can take a look in my Portfolio in the&nbsp;
             <Link href='https://xarthos.github.io/Portfolio' target='_blank'>
-              <span>GitHub</span>
+              GitHub
             </Link> webpage.
+
+            {console.log(currentUser)}
+
+            {currentUser &&
+              <Typography>
+                Welcome {currentUser?.name?.firstName}
+              </Typography>
+            }
           </>
         }
         alignItems='flex-start'
