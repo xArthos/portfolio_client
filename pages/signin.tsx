@@ -34,6 +34,7 @@ const Login = ({ query, currentUser, loadingCurrentUser, refetchCurrentUser }) =
 
                 if (login)
                     localStorage.setItem('devArthosPortfolio', login);
+                    refetchCurrentUser();
                     Router.push(
                         '/',
                         `/`
