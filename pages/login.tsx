@@ -55,7 +55,7 @@ const Login = ({ query, currentUser, loadingCurrentUser, refetchCurrentUser }) =
         initialValues: {
             email: '',
             password: ''
-        },
+        }
     });
 
     return (

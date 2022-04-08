@@ -34,39 +34,37 @@ const HeaderLoginSignUp = () => {
   return isMobile ?
     <Grid container className={classes.container} direction='row' alignItems='center' spacing={4} justifyContent='flex-end'>
       <Grid item className={classes.noMargin}>
-        {/* <Link
+        <Link
           href='/login'
-          variant='h4'
           color='inherit'
           className={classes.noMargin}
         >
           Login
-        </Link> */}
+        </Link>
       </Grid>
 
       <Grid item className={classes.noMargin}>
-        {/* <Link href='/sign-up'>
+        <Link href='/register'>
           <Button className={classes.signUpMobile}>Sign up</Button>
-        </Link> */}
+        </Link>
       </Grid>
     </Grid>
     :
     <Grid container className={classes.container} direction='row' alignItems='center' spacing={4} justifyContent='flex-end'>
       <Grid item className={classes.noMargin}>
-        {/* <Link
+        <Link
           href='/login'
-          variant='h4'
           color='inherit'
           className={classes.noMargin}
         >
           Login
-        </Link> */}
+        </Link>
       </Grid>
 
       <Grid item className={classes.noMargin}>
-        {/* <Link href='/sign-up'>
+        <Link href='/register'>
           <Button className={classes.noMargin}>Sign up</Button>
-        </Link> */}
+        </Link>
       </Grid>
     </Grid>
 };
