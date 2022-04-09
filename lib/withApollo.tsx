@@ -21,7 +21,6 @@ import { useGetCurrentUser } from './utils/userDataUtils';
 const UserCheck = ({ isPrivateRoute, children }) => {
     // Add a function that takes login cookies
     const { data: { currentUser }, loading, refetch } = useGetCurrentUser();
-    console.log(currentUser);
 
     if (loading) return null;
     if (isPrivateRoute && !currentUser) {

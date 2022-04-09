@@ -26,8 +26,6 @@ export default withApollo(({ currentUser, refetchCurrentUser, loadingCurrentUser
               GitHub
             </Link> webpage.
 
-            {console.log(currentUser)}
-
             {currentUser &&
               <Typography>
                 Welcome {currentUser?.name?.firstName}

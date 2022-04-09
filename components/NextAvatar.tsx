@@ -28,6 +28,7 @@ const NextAvatar = React.forwardRef((props: any, ref) => {
             className={imageProps ? imageProps : null}
             layout='fill'
             placeholder='blur'
+            blurDataURL='/avatar_placeholder.svg'
           />
           :
           <Blockies

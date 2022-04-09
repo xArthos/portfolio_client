@@ -82,14 +82,13 @@ const HeaderUserTopMenu = ({ user }) => {
           </MenuItem>
         </>
         :
-        null
-        // <Tooltip title='Click to open menu'>
-        //   <Chip
-        //     avatar={<NextAvatar data={user} src={user && user.avatarUrl} placeholder='/avatar_placeholder.svg' />}
-        //     onClick={event => setAnchorEl(event.currentTarget)}
-        //     label={`${user && user.firstName} ${user && user.lastName}`}
-        //   />
-        // </Tooltip>
+        <Tooltip title='Click to open menu'>
+          <Chip
+            avatar={<NextAvatar data={user} src={user && user.avatarUrl} placeholder='/avatar_placeholder.svg' />}
+            onClick={event => setAnchorEl(event.currentTarget)}
+            label={`${user && user.firstName} ${user && user.lastName}`}
+          />
+        </Tooltip>
       }
 
       <Menu
@@ -103,12 +102,12 @@ const HeaderUserTopMenu = ({ user }) => {
           horizontal: 'left'
         }}
       >
-        {/* <MenuItem onClick={handleHref('/user/[_id]/profile', `/user/${user && user._id}/profile`)}>Profile</MenuItem>
+        <MenuItem onClick={handleHref('/user/[_id]/profile', `/user/${user && user._id}/profile`)}>Profile</MenuItem>
         <MenuItem onClick={handleHref('/subscription')}>Membership</MenuItem>
         <MenuItem onClick={handleHref('/search')}>Advanced Search</MenuItem>
         <MenuItem onClick={handleHref('/user/[_id]/launchpad', `/user/${user && user._id}/launchpad`)}>Launchpad</MenuItem>
         <MenuItem onClick={handleHref('/settings')}>Settings</MenuItem>
-        <MenuItem onClick={handleLogout}>Logout</MenuItem> */}
+        <MenuItem onClick={handleLogout}>Logout</MenuItem>
       </Menu>
     </>
   );

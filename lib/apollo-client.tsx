@@ -69,8 +69,6 @@ export const createApolloClient = (headers: IncomingHttpHeaders | null = null) =
     const authLink = setContext((_, { headers }) => {
         // get the authentication token from local storage if it exists
         const token = localStorage.getItem('devArthosPortfolio');
-        console.log('token')
-        console.log(token)
 
         // return the headers to the context so httpLink can read them
         return {
@@ -87,13 +85,13 @@ export const createApolloClient = (headers: IncomingHttpHeaders | null = null) =
             onError(({ graphQLErrors, networkError }) => {
                 if (graphQLErrors)
                     graphQLErrors.forEach(({ message, locations, path }) => {
-                        console.log(
+                        console.error(
                             `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`
                         );
                     }
                     )
                 if (networkError)
-                    console.log(
+                    console.error(
                         `[Network error]: ${networkError}. Backend is unreachable. Is it running?`
                     )
             }),
