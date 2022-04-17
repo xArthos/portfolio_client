@@ -13,7 +13,7 @@ const lightTheme: ThemeOptions = {
         secondary: {
             light: '#b700ff',
             main: '#9a00d6',
-            dark: '	#7900a8',
+            dark: '#7900a8',
             contrastText: '#600085'
         },
         error: {
@@ -49,10 +49,10 @@ const lightTheme: ThemeOptions = {
             black: '#000000',
             white: '#ffffff'
         },
-        contrastThreshold: 1,
+        contrastThreshold: 0.5,
         tonalOffset: {
-            light: 1,
-            dark: 1
+            light: 0.5,
+            dark: 0.5
         },
         grey: {
             50: '#f8f8fa',
@@ -65,24 +65,24 @@ const lightTheme: ThemeOptions = {
             700: '#5b5b5b',
             800: '#5b5b5b',
             900: '#444444',
-            // A100: '',
-            // A200: '',
-            // A400: '',
-            // A700: ''
+            A100: '#EEEEEE',
+            A200: '#CCCCCC',
+            A400: '#666666',
+            A700: '#333333'
         },
-        // divider: '',
+        divider: '#70003c',
         action: {
             // active: '',
             hover: '#ff6600',
-            hoverOpacity: 1,
+            hoverOpacity: 0.5,
             // selected: '',
-            selectedOpacity: 1,
+            selectedOpacity: 0.5,
             // disabled: '',
-            disabledOpacity: 1,
+            disabledOpacity: 0.5,
             // disabledBackground: '',
             // focus: '',
-            focusOpacity: 1,
-            activatedOpacity: 1
+            focusOpacity: 0.5,
+            activatedOpacity: 0.5
         },
         background: {
             default: 'transparent',
@@ -91,12 +91,13 @@ const lightTheme: ThemeOptions = {
     },
     spacing: [0, 4, 8, 16, 32, 64],
     breakpoints: {
+        keys: ['xs', 'sm', 'md', 'lg', 'xl'],
         values: {
             xs: 0,
-            sm: 600,
-            md: 900,
-            lg: 1200,
-            xl: 1536
+            sm: 653,
+            md: 960,
+            lg: 1280,
+            xl: 1920
         }
     },
     typography: {

@@ -101,7 +101,7 @@ const Header = ({ currentUser, loadingCurrentUser, refetchCurrentUser }) => {
           {/* Avatar, Theme Switcher */}
           <Grid container item wrap='nowrap' alignItems='center'>
             <Grid item className={classes.grid}>
-              <Link href={'/'}>
+              <Link href='/'>
                 <ArthosLogo className={classes.headerLogo} />
               </Link>
             </Grid>

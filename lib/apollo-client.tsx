@@ -16,6 +16,9 @@ import { ApolloLink, ApolloClient, InMemoryCache, NormalizedCacheObject } from '
 // Apollo
 import { getCurrentUserQuery } from './utils/userDataUtils';
 
+// Config
+
+
 // type CustomGetServerSideProps<
 //     P extends { [key: string]: any } = { [key: string]: any },
 //     Q extends ParsedUrlQuery = ParsedUrlQuery
@@ -57,7 +60,7 @@ export const createApolloClient = (headers: IncomingHttpHeaders | null = null) =
     };
 
     const httpLink = createUploadLink({
-        uri: 'https://serverxarthos.vercel.app/graphql/', //'http://localhost:4000/graphql',
+        uri: process.env.NODE_ENV === 'development' ? 'https://serverxarthos.vercel.app/graphql' : 'http://localhost:4000/graphql',
         // Make sure that CORS and cookies work
         fetchOptions: {
             mode: 'cors' // 'no-cors'
@@ -213,6 +216,7 @@ export const getStaticProps = async ({ params: { id } }: IStaticProps) => {
 };
 
 // Use Apollo for Server-Side Rendering
+// TODO: #3 Set server side props for sending cookies between different domains
 export const getServerSideProps = async (
     context: GetServerSidePropsContext
 ) => {
@@ -230,7 +234,7 @@ export const getServerSideProps = async (
         return {
             props: {},
             redirect: {
-                destination: '/signin',
+                destination: '/login',
                 permanent: false
             }
         };

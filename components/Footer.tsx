@@ -8,8 +8,8 @@ import { makeStyles } from '@mui/styles';
 
 const useStyles = makeStyles(({ palette }) => ({
     footer: {
-        backgroundColor: palette.primary.main,
-        padding: '50px 23px',
+        background: `linear-gradient(180deg, ${palette.primary.contrastText}a2 0%, ${palette.secondary.main} 100%);`,
+        padding: '120px 0px',
         maxWidth: '100%',
         display: 'flex',
         justifyContent: 'center'

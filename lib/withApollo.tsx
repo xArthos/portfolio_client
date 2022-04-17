@@ -22,7 +22,7 @@ const UserCheck = ({ isPrivateRoute, children }) => {
     // Add a function that takes login cookies
     const { data: { currentUser }, loading, refetch } = useGetCurrentUser();
 
-    if (loading) return null;
+    if (loading) return null; // Todo: Create a loading page
     if (isPrivateRoute && !currentUser) {
         return (
             <Wrapper currentUser={currentUser} refetchCurrentUser={refetch} loadingCurrentUser={loading}>
@@ -59,7 +59,7 @@ const UserCheck = ({ isPrivateRoute, children }) => {
             </Wrapper>
         );
     } else {
-        return React.cloneElement(children, { currentUser: currentUser, loadingCurrentUser: loading, refetchCurrentUser: refetch });
+        return React.cloneElement(children, { currentUser: (currentUser && currentUser !== null) ? currentUser : undefined, loadingCurrentUser: loading, refetchCurrentUser: refetch });
     };
 };
 

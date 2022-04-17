@@ -5,7 +5,7 @@ import NumberFormat from 'react-number-format';
 // UI
 import TextField from '@mui/material/TextField';
 
-const NumberFormatCustom = (props) => {
+const NumberFormatCustom = (props: { [x: string]: any; name: string; inputRef?: any; onChange?: any; prefix?: any; suffix?: any; }) => {
     const { inputRef, onChange, name, prefix, suffix, ...other } = props;
 
     return (
@@ -30,6 +30,7 @@ const NumberFormatCustom = (props) => {
 const FormikTextField = ({ props, name, placeholder, disabled, formatNumber, prefix, suffix, noUnderline, ...other }) => (
     noUnderline ?
         <TextField
+            variant='filled'
             margin='normal'
             onChange={props.handleChange}
             onBlur={props.handleBlur}
@@ -45,6 +46,7 @@ const FormikTextField = ({ props, name, placeholder, disabled, formatNumber, pre
         />
         :
         <TextField
+            variant='filled'
             margin='normal'
             onChange={props.handleChange}
             onBlur={props.handleBlur}
@@ -56,7 +58,7 @@ const FormikTextField = ({ props, name, placeholder, disabled, formatNumber, pre
             name={name}
             inputProps={{ prefix, suffix }}
             {...other}
-            InputProps={process.browser && formatNumber && { inputComponent: NumberFormatCustom }}
+            InputProps={typeof window && formatNumber && { inputComponent: NumberFormatCustom }}
         />
 );
 

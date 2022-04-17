@@ -8,11 +8,11 @@ const darkTheme: ThemeOptions = {
             light: '#ffc100',
             main: '#ff9a00',
             dark: '#ff7400',
-            contrastText: '#ff4d00'
+            contrastText: '#ff8800'
         },
         secondary: {
             light: '#b700ff',
-            main: '#9a00d6',
+            main: '#ff0055',
             dark: '	#7900a8',
             contrastText: '#600085'
         },
@@ -49,10 +49,10 @@ const darkTheme: ThemeOptions = {
             black: '#000000',
             white: '#ffffff'
         },
-        contrastThreshold: 1,
+        contrastThreshold: 0.5,
         tonalOffset: {
-            light: 1,
-            dark: 1
+            light: 0.5,
+            dark: 0.5
         },
         grey: {
             50: '#f8f8fa',
@@ -65,24 +65,24 @@ const darkTheme: ThemeOptions = {
             700: '#5b5b5b',
             800: '#5b5b5b',
             900: '#444444',
-            // A100: '',
-            // A200: '',
-            // A400: '',
-            // A700: ''
+            A100: '#EEEEEE',
+            A200: '#CCCCCC',
+            A400: '#666666',
+            A700: '#333333'
         },
         // divider: '',
         action: {
             // active: '',
             hover: '#ff6600',
-            hoverOpacity: 1,
-            selected: '#f8f8fa', // <--- Test
-            selectedOpacity: 1,
+            hoverOpacity: 0.5,
+            selected: '#302100', // <--- Test
+            selectedOpacity: 0.5,
             // disabled: '',
-            disabledOpacity: 1,
+            disabledOpacity: 0.5,
             // disabledBackground: '',
-            // focus: '',
-            focusOpacity: 1,
-            activatedOpacity: 1
+            focus: '#302100',
+            focusOpacity: 0.5,
+            activatedOpacity: 0.5
         },
         background: {
             default: 'transparent',
@@ -91,12 +91,13 @@ const darkTheme: ThemeOptions = {
     },
     spacing: [0, 4, 8, 16, 32, 64],
     breakpoints: {
+        keys: ['xs', 'sm', 'md', 'lg', 'xl'],
         values: {
             xs: 0,
-            sm: 600,
-            md: 900,
-            lg: 1200,
-            xl: 1536
+            sm: 653,
+            md: 960,
+            lg: 1280,
+            xl: 1920
         }
     },
     typography: {
@@ -123,7 +124,27 @@ const darkTheme: ThemeOptions = {
                     backgroundAttachment: 'fixed'
                 }
             }
-        }
+        },
+        MuiInputBase: {
+            styleOverrides: {
+                input: {
+                    '&:-webkit-autofill': {
+                        '-webkit-box-shadow': '0 0 0 100px #272727 inset !important'
+                    },
+                    color: 'pink'
+                }
+            }
+        },
+        // MuiFilledInput: {
+        //     styleOverrides: {
+        //         input: {
+        //             '&:-webkit-autofill': {
+        //                 color: 'pink'
+        //             },
+        //             color: 'pink'
+        //         }
+        //     }
+        // }
     }
 };
 

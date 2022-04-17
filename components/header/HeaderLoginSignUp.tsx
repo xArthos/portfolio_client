@@ -10,7 +10,7 @@ import { makeStyles } from '@mui/styles';
 // Components
 import Link from '../Link';
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles(({ palette }) => ({
   noMargin: {
     margin: 0,
   },
@@ -21,15 +21,20 @@ const useStyles = makeStyles(() => ({
   container: {
     minWidth: 226
   },
-  signUpMobile: {
-    padding: 0,
-    margin: 0
+  signUp: {
+    '&:hover': {
+      color: `${palette.secondary.main} !important`
+    },
+    '@media (max-width: 653px)': {
+      padding: 0,
+      margin: 0
+    }
   }
 }));
 
 const HeaderLoginSignUp = () => {
   const classes = useStyles();
-  const isMobile = useMediaQuery('(max-width:653px)');
+  const isMobile = useMediaQuery('(max-width: 653px)');
 
   return isMobile ?
     <Grid container className={classes.container} direction='row' alignItems='center' spacing={4} justifyContent='flex-end'>
@@ -45,7 +50,7 @@ const HeaderLoginSignUp = () => {
 
       <Grid item className={classes.noMargin}>
         <Link href='/register'>
-          <Button className={classes.signUpMobile}>Sign up</Button>
+          <Button className={classes.signUp}>Register</Button>
         </Link>
       </Grid>
     </Grid>
@@ -63,7 +68,7 @@ const HeaderLoginSignUp = () => {
 
       <Grid item className={classes.noMargin}>
         <Link href='/register'>
-          <Button className={classes.noMargin}>Sign up</Button>
+          <Button className={classes.signUp}>Register</Button>
         </Link>
       </Grid>
     </Grid>
