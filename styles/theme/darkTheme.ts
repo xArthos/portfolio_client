@@ -130,8 +130,7 @@ const darkTheme: ThemeOptions = {
                 input: {
                     '&:-webkit-autofill': {
                         '-webkit-box-shadow': '0 0 0 100px #272727 inset !important'
-                    },
-                    color: 'pink'
+                    }
                 }
             }
         },
