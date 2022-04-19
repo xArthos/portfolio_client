@@ -32,7 +32,7 @@
     "@mui/icons-material": "^5.5.0",
     "@mui/material": "^5.5.3",
     "@mui/styles": "^5.5.3",
-    "@next/swc-win32-x64-msvc": "^12.1.2",
+    "@next/swc-linux-x64-gnu": "^12.1.2",
     "@svgr/webpack": "^6.2.1",
     "apollo-upload-client": "^17.0.0",
     "clsx": "^1.1.1",
