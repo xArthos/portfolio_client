@@ -60,7 +60,7 @@ export const createApolloClient = (headers: IncomingHttpHeaders | null = null) =
     };
 
     const httpLink = createUploadLink({
-        uri: process.env.NODE_ENV === 'development' ? 'https://serverxarthos.vercel.app/graphql' : 'http://localhost:4000/graphql',
+        uri: 'https://serverxarthos.vercel.app/graphql',
         // Make sure that CORS and cookies work
         fetchOptions: {
             mode: 'cors' // 'no-cors'
