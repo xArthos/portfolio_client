@@ -83,7 +83,6 @@ const Login = ({ query, currentUser, loadingCurrentUser, refetchCurrentUser }) =
                             autoFocus
                             placeholder={undefined}
                             disabled={undefined}
-                            formatNumber={undefined}
                             prefix={undefined}
                             suffix={undefined}
                             noUnderline={undefined}
@@ -98,7 +97,6 @@ const Login = ({ query, currentUser, loadingCurrentUser, refetchCurrentUser }) =
                             fullWidth
                             placeholder={undefined}
                             disabled={undefined}
-                            formatNumber={undefined}
                             prefix={undefined}
                             suffix={undefined}
                             noUnderline={undefined}
