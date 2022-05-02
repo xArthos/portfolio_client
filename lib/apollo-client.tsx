@@ -168,7 +168,7 @@ export const useGetApolloClient = (pageProps: AppProps['pageProps']) => {
 };
 
 // Use Apollo for (Incremental) Static Site Generation - TO DEVELOP
-const client = initializeApollo()
+const client = initializeApollo();
 
 // export const getStaticPaths = async () => {
 //     // here we use the Apollo client to retrieve the currentUser
@@ -221,7 +221,8 @@ export const getServerSideProps = async (
     context: GetServerSidePropsContext
 ) => {
     // pass along the headers for authentication
-    const client = initializeApollo({ headers: context?.req?.headers })
+    const client = initializeApollo({ headers: context?.req?.headers });
+
     try {
         await client.query({
             query: getCurrentUserQuery
