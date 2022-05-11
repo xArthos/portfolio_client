@@ -13,8 +13,10 @@ import Link from '../components/Link';
 // import Button from '../components/Button';
 import Wrapper from '../components/Wrapper';
 import Section from '../components/Section';
-import validateEmail from '../utils/validateEmail';
 import FormikTextField from '../components/formik/FormikTextField';
+
+// Utils
+import validateEmail from '../utils/validateEmail';
 
 // Apollo
 import withApollo from '../lib/withApollo';
@@ -22,7 +24,7 @@ import { login } from '../lib/utils/userDataUtils';
 import { areRequired } from '../utils/validation';
 
 const Login = ({ query, currentUser, loadingCurrentUser, refetchCurrentUser }) => {
-    // Apollo
+    // Apollo - Mutations
     const [logIn, { loading }] = useMutation(login);
 
     const formik = useFormik({
@@ -34,20 +36,20 @@ const Login = ({ query, currentUser, loadingCurrentUser, refetchCurrentUser }) =
 
                 if (login)
                     localStorage.setItem('devArthosPortfolio', login);
-                    refetchCurrentUser();
-                    Router.push(
-                        '/',
-                        `/`
-                    );
+                refetchCurrentUser();
+                Router.push(
+                    '/',
+                    `/`
+                );
             } catch (e) {
                 console.error(e);
                 setFieldError('password', 'Wrong credentials.');
             };
         },
         validate: values => {
-            const errors = {};
+            const errors: { email: string, password: string } = { email: '', password: '' };
             areRequired(values, errors, ['email', 'password']);
-            // if (!validateEmail(values.email)) errors.email = 'Invalid email address.';
+            if (!validateEmail(values.email)) errors.email = 'Invalid email address.';
             // else if (values.password.length < 5) errors.password = 'To short.';
             // else if (values.password.length > 40) errors.password = 'To long.';
             return errors;
@@ -86,6 +88,7 @@ const Login = ({ query, currentUser, loadingCurrentUser, refetchCurrentUser }) =
                             prefix={undefined}
                             suffix={undefined}
                             noUnderline={undefined}
+                            helperTextProps={undefined}
                         />
 
                         {/* Password */}
@@ -100,6 +103,7 @@ const Login = ({ query, currentUser, loadingCurrentUser, refetchCurrentUser }) =
                             prefix={undefined}
                             suffix={undefined}
                             noUnderline={undefined}
+                            helperTextProps={undefined}
                         />
 
                         <Button

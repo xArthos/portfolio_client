@@ -4,8 +4,8 @@ import React from 'react';
 // UI
 import TextField from '@mui/material/TextField';
 
-const FormikTextField = ({ props, name, placeholder, disabled, prefix, suffix, noUnderline, ...other }) => (
-    noUnderline ?
+const FormikTextField = ({ props, name, placeholder, disabled, prefix, suffix, noUnderline, helperTextProps, ...other }) => {
+    return noUnderline ?
         <TextField
             variant='filled'
             margin='normal'
@@ -18,8 +18,9 @@ const FormikTextField = ({ props, name, placeholder, disabled, prefix, suffix, n
             disabled={disabled}
             name={name}
             inputProps={{ prefix, suffix }}
-            {...other}
             InputProps={{ disableUnderline: noUnderline }}
+            FormHelperTextProps={helperTextProps}
+            {...other}
         />
         :
         <TextField
@@ -34,8 +35,9 @@ const FormikTextField = ({ props, name, placeholder, disabled, prefix, suffix, n
             disabled={disabled}
             name={name}
             inputProps={{ prefix, suffix }}
+            FormHelperTextProps={helperTextProps}
             {...other}
         />
-);
+};
 
 export default FormikTextField;

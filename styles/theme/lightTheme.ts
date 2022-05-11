@@ -124,6 +124,22 @@ const lightTheme: ThemeOptions = {
                     backgroundAttachment: 'fixed'
                 }
             }
+        },
+        MuiFormHelperText: {
+            styleOverrides: {
+                root: {
+                    position: 'absolute',
+                    top: 55
+                }
+            }
+        },
+        MuiFormControl: {
+            styleOverrides: {
+                root: {
+                    marginTop: 16,
+                    marginBottom: 8
+                }
+            }
         }
     }
 };

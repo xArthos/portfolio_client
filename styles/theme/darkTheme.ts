@@ -134,16 +134,22 @@ const darkTheme: ThemeOptions = {
                 }
             }
         },
-        // MuiFilledInput: {
-        //     styleOverrides: {
-        //         input: {
-        //             '&:-webkit-autofill': {
-        //                 color: 'pink'
-        //             },
-        //             color: 'pink'
-        //         }
-        //     }
-        // }
+        MuiFormHelperText: {
+            styleOverrides: {
+                root: {
+                    position: 'absolute',
+                    top: 55
+                }
+            }
+        },
+        MuiFormControl: {
+            styleOverrides: {
+                root: {
+                    marginTop: 16,
+                    marginBottom: 8
+                }
+            }
+        }
     }
 };
 
