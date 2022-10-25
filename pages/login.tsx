@@ -47,14 +47,14 @@ const Login = ({ query, currentUser, loadingCurrentUser, refetchCurrentUser }) =
                 setFieldError('password', 'Wrong credentials.');
             };
         },
-        validate: values => {
-            const errors: { email: string, password: string } = { email: '', password: '' };
-            areRequired(values, errors, ['email', 'password']);
-            if (!validateEmail(values.email)) errors.email = 'Invalid email address.';
-            // else if (values.password.length < 5) errors.password = 'To short.';
-            // else if (values.password.length > 40) errors.password = 'To long.';
-            return errors;
-        },
+        // validate: values => {
+        //     const errors: { email: string, password: string } = { email: '', password: '' };
+        //     areRequired(values, errors, ['email', 'password']);
+        //     if (!validateEmail(values.email)) errors.email = 'Invalid email address.';
+        //     // else if (values.password.length < 5) errors.password = 'To short.';
+        //     // else if (values.password.length > 40) errors.password = 'To long.';
+        //     return errors;
+        // },
         initialValues: {
             email: '',
             password: ''
@@ -76,7 +76,7 @@ const Login = ({ query, currentUser, loadingCurrentUser, refetchCurrentUser }) =
                 spacing={undefined}
             >
                 <Grid item xs={12} sm={6} md={5}>
-                    <form onSubmit={() => formik.handleSubmit()}>
+                    <form onSubmit={formik.handleSubmit}>
                         {/* Business Email */}
                         <FormikTextField
                             name='email'
