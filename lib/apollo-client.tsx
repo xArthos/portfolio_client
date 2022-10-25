@@ -68,6 +68,7 @@ export const createApolloClient = (headers: IncomingHttpHeaders | null = null) =
         credentials: 'include',
         fetch: enhancedFetch
     });
+    console.log(httpLink)
 
     const authLink = setContext((_, { headers }) => {
         // get the authentication token from local storage if it exists
@@ -81,6 +82,24 @@ export const createApolloClient = (headers: IncomingHttpHeaders | null = null) =
             }
         };
     });
+
+    console.log(ApolloLink.from([
+        onError(({ graphQLErrors, networkError }) => {
+            if (graphQLErrors)
+                graphQLErrors.forEach(({ message, locations, path }) => {
+                    console.error(
+                        `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`
+                    );
+                }
+                )
+            if (networkError)
+                console.error(
+                    `[Network error]: ${networkError}. Backend is unreachable. Is it running?`
+                )
+        }),
+        // This uses apollo-link-http under the hood, so all the options here come from that package
+        authLink.concat(httpLink)
+    ]))
 
     return new ApolloClient({
         ssrMode: typeof window === 'undefined',
@@ -123,7 +142,7 @@ export const initializeApollo = (
     }
 ) => {
     const _apolloClient = apolloClient ?? createApolloClient(headers);
-    console.log(_apolloClient)
+
     // If your page has Next.js data fetching methods that use Apollo Client, the initial state
     // get hydrated here
     if (initialState) {
