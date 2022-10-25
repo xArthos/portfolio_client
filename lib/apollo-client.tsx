@@ -112,6 +112,10 @@ interface IInitializeApollo {
     initialState?: InitialState | null
 }
 
+interface CustomPageProps { // <--- your custom page props
+    props: Object
+}
+
 export const initializeApollo = (
     { headers, initialState }: IInitializeApollo = {
         headers: null,
@@ -151,7 +155,7 @@ export const initializeApollo = (
 
 export const addApolloState = (
     client: ApolloClient<NormalizedCacheObject>,
-    pageProps: AppProps['pageProps']
+    pageProps: AppProps<CustomPageProps>['pageProps']
 ) => {
     if (pageProps?.props) {
         pageProps.props[APOLLO_STATE_PROP_NAME] = client.cache.extract();
