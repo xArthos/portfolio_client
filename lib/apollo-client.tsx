@@ -123,7 +123,7 @@ export const initializeApollo = (
     }
 ) => {
     const _apolloClient = apolloClient ?? createApolloClient(headers);
-
+    console.log(_apolloClient)
     // If your page has Next.js data fetching methods that use Apollo Client, the initial state
     // get hydrated here
     if (initialState) {
@@ -144,7 +144,6 @@ export const initializeApollo = (
         // Restore the cache with the merged data
         _apolloClient.cache.restore(data);
     };
-    console.log(apolloClient, _apolloClient)
 
     // For SSG and SSR always create a new Apollo Client
     if (typeof window === 'undefined') return _apolloClient;

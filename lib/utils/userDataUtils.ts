@@ -70,6 +70,7 @@ export const getUserQuery = gql`
 // GET CURRENT USER
 export const useGetCurrentUser = () => {
   const props = useQuery(getCurrentUserQuery);
+  console.log(props);
 
   if (!props.data) {
     props.data = { currentUser: undefined };
