@@ -81,7 +81,7 @@ export const useGetCurrentUser = () => {
 // GET USER QUERY
 export const useGetUserById = (_id: any) => {
   const props = useQuery(getUserQuery, { variables: { _id }, skip: !_id || _id === null });
-  console.log(props)
+
   if (!props.data) {
     props.data = { user: {} };
   };
