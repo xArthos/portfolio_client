@@ -76,7 +76,7 @@ const Login = ({ query, currentUser, loadingCurrentUser, refetchCurrentUser }) =
                 spacing={undefined}
             >
                 <Grid item xs={12} sm={6} md={5}>
-                    <form onSubmit={() => console.log('Something')}>
+                    <form onSubmit={() => formik.handleSubmit()}>
                         {/* Business Email */}
                         <FormikTextField
                             name='email'
