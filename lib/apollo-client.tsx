@@ -44,6 +44,7 @@ const APOLLO_STATE_PROP_NAME = 'devArthosApolloState';
 let apolloClient: ApolloClient<NormalizedCacheObject> | undefined;
 
 export const createApolloClient = (headers: IncomingHttpHeaders | null = null) => {
+    console.log('test1')
     // isomorphic fetch for passing the cookies along with each GraphQL request
     const enhancedFetch = async (url: RequestInfo, init: RequestInit) => {
         const response = await fetch(url, {
@@ -55,7 +56,7 @@ export const createApolloClient = (headers: IncomingHttpHeaders | null = null) =
                 Cookie: headers?.cookie ?? ''
             }
         });
-
+        console.log('test2', response)
         return response;
     };
 
@@ -68,8 +69,7 @@ export const createApolloClient = (headers: IncomingHttpHeaders | null = null) =
         credentials: 'include',
         fetch: enhancedFetch
     });
-
-    console.log(process.env.NODE_ENV === 'development' ? 'http://localhost:4000/graphql' : 'https://serverxarthos.vercel.app/graphql')
+    console.log('test3', httpLink)
 
     const authLink = setContext((_, { headers }) => {
         // get the authentication token from local storage if it exists
@@ -83,6 +83,7 @@ export const createApolloClient = (headers: IncomingHttpHeaders | null = null) =
             }
         };
     });
+    console.log('test4', authLink)
 
     return new ApolloClient({
         ssrMode: typeof window === 'undefined',
