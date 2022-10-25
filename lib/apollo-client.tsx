@@ -69,6 +69,8 @@ export const createApolloClient = (headers: IncomingHttpHeaders | null = null) =
         fetch: enhancedFetch
     });
 
+    console.log(process.env.NODE_ENV === 'development' ? 'http://localhost:4000/graphql' : 'https://serverxarthos.vercel.app/graphql')
+
     const authLink = setContext((_, { headers }) => {
         // get the authentication token from local storage if it exists
         const token = localStorage.getItem('devArthosPortfolio');
@@ -167,7 +169,7 @@ export const addApolloState = (
 export const useGetApolloClient = (pageProps: AppProps['pageProps']) => {
     const state = pageProps[APOLLO_STATE_PROP_NAME];
     const store = useMemo(() => initializeApollo({ initialState: state }), [state]);
-    console.log(state)
+
     return store;
 };
 
