@@ -30,6 +30,7 @@ const Login = ({ query, currentUser, loadingCurrentUser, refetchCurrentUser }) =
     const formik = useFormik({
         onSubmit: async (values, { setFieldError }) => {
             try {
+                console.log('Test login')
                 const { data: { logIn: login } } = await logIn({
                     variables: values
                 });
