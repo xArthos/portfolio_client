@@ -10,31 +10,25 @@ import { useMutation } from '@apollo/react-hooks';
 import Tab from '@mui/material/Tab';
 import Tabs from '@mui/material/Tabs';
 import Grid from '@mui/material/Grid';
-import Step from '@mui/material/Step';
-import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import AppBar from '@mui/material/AppBar';
-import Stepper from '@mui/material/Stepper';
-import StepLabel from '@mui/material/StepLabel';
-import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
-import StepConnector, { stepConnectorClasses } from '@mui/material/StepConnector';
-import { styled } from '@mui/material/styles';
 import { makeStyles } from '@mui/styles';
 
 // Components
 import Section from '../components/Section';
 import Wrapper from '../components/Wrapper';
+import Stepper from '../components/Stepper';
 import TabPanel from '../components/TabPanel';
 import FormikRadio from '../components/formik/FormikRadio';
+import FormikSelect from '../components/formik/FormikSelect';
 import FormikTextField from '../components/formik/FormikTextField';
 
 // Icons
-import Check from '@mui/icons-material/Check';
 import SettingsIcon from '@mui/icons-material/Settings';
 import GroupAddIcon from '@mui/icons-material/GroupAdd';
 import VideoLabelIcon from '@mui/icons-material/VideoLabel';
-import { StepIconProps } from '@mui/material/StepIcon';
+import ReportGmailerrorredIcon from '@mui/icons-material/ReportGmailerrorred';
 
 // Utils
 import validateEmail from '../utils/validateEmail';
@@ -44,191 +38,26 @@ import withApollo from '../lib/withApollo';
 import { login } from '../lib/utils/userDataUtils';
 import { areRequired } from '../utils/validation';
 
-
-const QontoConnector = styled(StepConnector)(({ theme }) => ({
-    [`&.${stepConnectorClasses.alternativeLabel}`]: {
-        top: 10,
-        left: 'calc(-50% + 16px)',
-        right: 'calc(50% + 16px)'
-    },
-    [`&.${stepConnectorClasses.active}`]: {
-        [`& .${stepConnectorClasses.line}`]: {
-            borderColor: '#784af4'
-        }
-    },
-    [`&.${stepConnectorClasses.completed}`]: {
-        [`& .${stepConnectorClasses.line}`]: {
-            borderColor: '#784af4'
-        }
-    },
-    [`& .${stepConnectorClasses.line}`]: {
-        borderColor: theme.palette.mode === 'dark' ? theme.palette.grey[800] : '#eaeaf0',
-        borderTopWidth: 3,
-        borderRadius: 1
-    }
-}));
-
-const QontoStepIconRoot = styled('div')<{ ownerState: { active?: boolean } }>(
-    ({ theme, ownerState }) => ({
-        color: theme.palette.mode === 'dark' ? theme.palette.grey[700] : '#eaeaf0',
-        display: 'flex',
-        height: 22,
-        alignItems: 'center',
-        ...(ownerState.active && {
-            color: '#784af4'
-        }),
-        '& .QontoStepIcon-completedIcon': {
-            color: '#784af4',
-            zIndex: 1,
-            fontSize: 18
-        },
-        '& .QontoStepIcon-circle': {
-            width: 8,
-            height: 8,
-            borderRadius: '50%',
-            backgroundColor: 'currentColor'
-        }
-    })
-);
-
-const QontoStepIcon = (props: StepIconProps) => {
-    const { active, completed, className } = props;
-
-    return (
-        <QontoStepIconRoot ownerState={{ active }} className={className}>
-            {completed ? (
-                <Check className="QontoStepIcon-completedIcon" />
-            ) : (
-                <div className="QontoStepIcon-circle" />
-            )}
-        </QontoStepIconRoot>
-    );
-};
-
-const ColorlibConnector = styled(StepConnector)(({ theme }) => ({
-    [`&.${stepConnectorClasses.alternativeLabel}`]: {
-        top: 22
-    },
-    [`&.${stepConnectorClasses.active}`]: {
-        [`& .${stepConnectorClasses.line}`]: {
-            backgroundImage:
-                'linear-gradient( 95deg,rgb(242,113,33) 0%,rgb(233,64,87) 50%,rgb(138,35,135) 100%)'
-        }
-    },
-    [`&.${stepConnectorClasses.completed}`]: {
-        [`& .${stepConnectorClasses.line}`]: {
-            backgroundImage:
-                'linear-gradient( 95deg,rgb(242,113,33) 0%,rgb(233,64,87) 50%,rgb(138,35,135) 100%)'
-        }
-    },
-    [`& .${stepConnectorClasses.line}`]: {
-        height: 3,
-        border: 0,
-        backgroundColor: theme.palette.mode === 'dark' ? theme.palette.grey[800] : '#eaeaf0',
-        borderRadius: 1
-    }
-}));
-
-const ColorlibStepIconRoot = styled('div')<{
-    ownerState: { completed?: boolean; active?: boolean };
-}>(({ theme, ownerState }) => ({
-    backgroundColor: theme.palette.mode === 'dark' ? theme.palette.grey[700] : '#ccc',
-    zIndex: 1,
-    color: '#fff',
-    width: 50,
-    height: 50,
-    display: 'flex',
-    borderRadius: '50%',
-    justifyContent: 'center',
-    alignItems: 'center',
-    ...(ownerState.active && {
-        backgroundImage:
-            'linear-gradient( 136deg, rgb(242,113,33) 0%, rgb(233,64,87) 50%, rgb(138,35,135) 100%)',
-        boxShadow: '0 4px 10px 0 rgba(0,0,0,.25)',
-    }),
-    ...(ownerState.completed && {
-        backgroundImage:
-            'linear-gradient( 136deg, rgb(242,113,33) 0%, rgb(233,64,87) 50%, rgb(138,35,135) 100%)',
-    }),
-}));
-
-const ColorlibStepIcon = (props: StepIconProps) => {
-    const { active, completed, className } = props;
-
-    // Icons to show
-    const icons: { [index: string]: React.ReactElement } = {
-        1: <SettingsIcon />,
-        2: <GroupAddIcon />,
-        3: <VideoLabelIcon />
-    };
-
-    return (
-        <ColorlibStepIconRoot ownerState={{ completed, active }} className={className}>
-            {icons[String(props.icon)]}
-        </ColorlibStepIconRoot>
-    );
-};
-
-const CustomizedSteppers = ({ activeStep = 2, steps = ['Account Data', 'Personal Data', 'Check'] }) => {
-    return (
-        <Stack sx={{ width: '100%' }} spacing={4}>
-            <Stepper alternativeLabel activeStep={activeStep} connector={<QontoConnector />}>
-                {steps.map((label) => (
-                    <Step key={label}>
-                        <StepLabel StepIconComponent={QontoStepIcon}>{label}</StepLabel>
-                    </Step>
-                ))}
-            </Stepper>
-
-            <Stepper alternativeLabel activeStep={activeStep} connector={<ColorlibConnector />}>
-                {steps.map((label) => (
-                    <Step key={label}>
-                        <StepLabel StepIconComponent={ColorlibStepIcon}>{label}</StepLabel>
-                    </Step>
-                ))}
-            </Stepper>
-        </Stack>
-    );
-};
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 const useStyles = makeStyles(({ palette }) => ({
     register: {
-        background: `-webkit-linear-gradient(left, #3931af, #00c6ff)`,
-        margin: 125,
-        padding: '3%'
+        background: `linear-gradient(left, ${palette.primary.main}, ${palette.secondary.main})`,
+        // background: `-webkit-linear-gradient(left, ${palette.primary}, ${palette.secondary})`,
+        marginTop: '3%',
+        padding: '3%',
+        margin: 0,
+        maxWidth: '100%'
     },
     registerLeft: {
         textAlign: 'center',
         color: '#fff',
         marginTop: '4%',
+        padding: '0px !important',
         '& img': {
             // marginTop: '15%',
             // marginBottom: '5%',
             // width: '25%',
-            '-webkit-animation': 'mover 2s infinite alternate',
-            animation: 'mover 1s infinite alternate'
+            '-webkit-animation': '$mover 2s infinite alternate',
+            animation: '$mover 1s infinite alternate'
         },
         '& p': {
             fontWeight: 'lighter',
@@ -240,7 +69,8 @@ const useStyles = makeStyles(({ palette }) => ({
         background: '#f8f9fa',
         borderTopLeftRadius: '10% 50%',
         borderBottomLeftRadius: '10% 50%',
-        paddingLeft: 85,
+        paddingLeft: '85px !important',
+        paddingTop: '0px !important',
         '& .nav-tabs': {
             marginTop: '3%',
             border: 'none',
@@ -315,20 +145,28 @@ const useStyles = makeStyles(({ palette }) => ({
         borderBottom: 'none'
     },
     tabScroller: {
-        position: 'unset'
+        position: 'unset',
+        background: 'none'
     },
     tabHeight: {
         maxHeight: 29,
         minHeight: 29
     },
-    '@-webkit-keyframes mover': {
-        '0%': {
-            transform: 'translateY(0)'
-        },
-        '100%': {
-            transform: 'translateY(-20px)'
-        }
+    hide: {
+        display: 'none'
     },
+    buttonBox: {
+        paddingLeft: 16,
+        paddingTop: 16
+    },
+    // '@-webkit-keyframes mover': {
+    //     '0%': {
+    //         transform: 'translateY(0)'
+    //     },
+    //     '100%': {
+    //         transform: 'translateY(-20px)'
+    //     }
+    // },
     '@keyframes mover': {
         '0%': {
             transform: 'translateY(0)'
@@ -344,7 +182,7 @@ interface FormikRegisterError {
     username?: string;
     password: string;
     repeatPassword: string;
-}
+};
 
 export default withApollo(({ currentUser, refetchCurrentUser, loadingCurrentUser, colorModeContext }) => {
     const classes = useStyles();
@@ -352,13 +190,21 @@ export default withApollo(({ currentUser, refetchCurrentUser, loadingCurrentUser
     // Hooks
     const [step, setStep] = React.useState(0);
     const [value, setValue] = React.useState(0);
+    const [stepError, setStepError]: any = React.useState('none');
 
     // Apollo - Mutations
     const [logIn, { loading }] = useMutation(login);
 
     // Handlers
     const handleChangeTab = (event: React.SyntheticEvent, newValue: number) => { setValue(newValue); };
-    const handleChangeStep = (event: React.SyntheticEvent, newValue: number) => { setStep(newValue); };
+    const handleChangeStep = (event: React.SyntheticEvent, newValue: number) => {
+        if (formik.errors.email !== '' || formik.errors.password !== '' || formik.errors.username !== '' || formik.errors.repeatPassword !== '') {
+            setStepError(0);
+        } else {
+            setStep(newValue);
+            setStepError(undefined);
+        };
+    };
 
     const formik = useFormik({
         onSubmit: async (values, { setFieldError }) => {
@@ -381,12 +227,19 @@ export default withApollo(({ currentUser, refetchCurrentUser, loadingCurrentUser
         },
         validate: values => {
             const errors: FormikRegisterError = { email: '', password: '', username: '', repeatPassword: '' };
-            areRequired(values, errors, ['email', 'password']);
-            if (validateEmail(values.username)) errors.username = 'Don\'t use email for username';
-            if (!validateEmail(values.email)) errors.email = 'Invalid email address';
+
+            areRequired(values, errors, ['email', 'password', 'username', 'repeatPassword']);
+            if (values.username !== '' && validateEmail(values.username)) errors.username = 'Don\'t use email for username';
+            if (values.email !== '' && !validateEmail(values.email)) errors.email = 'Invalid email address';
+
             if ((values.password !== values.repeatPassword) && values.repeatPassword !== '') errors.repeatPassword = 'Password doesn\'t match';
-            else if (values.password.length < 5) errors.password = 'To short';
-            else if (values.password.length > 40) errors.password = 'To long';
+            if (values.password !== '' && values.password.length < 5) errors.password = 'To short';
+            if (values.password.length > 40) errors.password = 'To long';
+
+            if (formik.errors.email === '' && formik.errors.password === '' && formik.errors.username === '' && formik.errors.repeatPassword === '') {
+                setStepError(undefined);
+            };
+
             return errors;
         },
         initialValues: {
@@ -394,7 +247,12 @@ export default withApollo(({ currentUser, refetchCurrentUser, loadingCurrentUser
             email: '',
             password: '',
             repeatPassword: '',
-            gender: 'male'
+            gender: 'male',
+            firstName: '',
+            surname: '',
+            otherName: '',
+            recoveryQuestion: '',
+            recoveryQuestionAnswer: ''
         }
     });
 
@@ -407,8 +265,26 @@ export default withApollo(({ currentUser, refetchCurrentUser, loadingCurrentUser
 
     const genderOptions = [
         { label: 'Male', value: 'male' },
-        { label: 'Female', value: 'female' }
+        { label: 'Female', value: 'female' },
+        { label: 'Other', value: 'other' }
     ];
+
+    const securityQuestions = [
+        { label: 'Your elementary school?', value: 'q1' },
+        { label: 'Your best friend name?', value: 'q2' },
+        { label: 'Your first travel location?', value: 'q3' }
+    ];
+
+    // Steps to add to the stepper
+    const steps = ['Account Data', 'Personal Data', 'Security', 'Check'];
+
+    // Icons to show
+    const icons: { [index: string]: React.ReactElement } = {
+        1: stepError === 0 ? <ReportGmailerrorredIcon /> : <SettingsIcon />,
+        2: stepError === 1 ? <ReportGmailerrorredIcon /> : <GroupAddIcon />,
+        3: stepError === 2 ? <ReportGmailerrorredIcon /> : <VideoLabelIcon />,
+        4: stepError === 3 ? <ReportGmailerrorredIcon /> : <VideoLabelIcon />
+    };
 
     return (
         <Wrapper
@@ -424,224 +300,88 @@ export default withApollo(({ currentUser, refetchCurrentUser, loadingCurrentUser
                 direction='column'
                 containerClass={undefined}
                 headerClass={undefined}
-                gridClass={undefined}
+                gridClass={classes.register}
                 maxWidth=''
                 justify=''
                 spacing={undefined}
             >
-                <Container className='register'>
-                    <Grid container>
-                        <Grid item md={3} className={classes.registerLeft}>
-                            <Image color='transparent' src='/avatar.png' alt='' />
+                {/* Left Side - Animation Avatar, Register/Login with 3rd Services, Switch Register/Login */}
+                <Grid item sm={4} md={3} className={classes.registerLeft}>
+                    <Image color='transparent' src='/avatar.png' alt='' />
 
-                            <Typography variant='h4' component='h3'>
-                                Welcome
-                            </Typography>
+                    <Typography variant='h4' component='h3'>
+                        Welcome
+                    </Typography>
 
-                            <Typography variant='body1' component='p'>
-                                You are 30 seconds away from earning your own money!
-                            </Typography>
+                    <Typography variant='body1' component='p'>
+                        You are 30 seconds away from earning your own money!
+                    </Typography>
 
-                            <Button className={classes.submitButton} type='submit' >Submit</Button>
-                        </Grid>
+                    <Button className={classes.submitButton} type='submit' >Submit</Button>
+                </Grid>
 
-                        <Grid item md={9} className={classes.registerRight}>
-                            <AppBar position='static' color='transparent' elevation={0} className={classes.appBar}>
-                                <Tabs
-                                    value={value}
-                                    onChange={handleChangeTab}
-                                    className={classes.tabPanel}
-                                    textColor='secondary'
-                                    aria-label='full width tabs example'
-                                    classes={{ scroller: classes.tabScroller, flexContainer: classes.tabHeight }}
-                                >
-                                    <Tab
-                                        classes={{ selected: classes.tabSelected, root: classes.tabHeight }}
-                                        label='Users'
-                                        {...a11yProps(0)}
-                                    />
+                {/* Right Side - Stepper, Register Form, Switch Registration Type */}
+                <Grid item sm={8} md={9} className={classes.registerRight}>
+                    {/* Registration Type */}
+                    <AppBar position='static' color='transparent' elevation={0} className={classes.appBar}>
+                        <Tabs
+                            value={value}
+                            onChange={handleChangeTab}
+                            className={classes.tabPanel}
+                            textColor='secondary'
+                            aria-label='full width tabs example'
+                            classes={{ scroller: classes.tabScroller, flexContainer: classes.tabHeight, indicator: classes.hide }}
+                        >
+                            <Tab
+                                classes={{ selected: classes.tabSelected, root: classes.tabHeight }}
+                                label='Users'
+                                {...a11yProps(0)}
+                            />
 
-                                    <Tab
-                                        classes={{ selected: classes.tabSelected, root: classes.tabHeight }}
-                                        label='Recruiter'
-                                        {...a11yProps(1)}
-                                    />
-                                </Tabs>
-                            </AppBar>
+                            <Tab
+                                classes={{ selected: classes.tabSelected, root: classes.tabHeight }}
+                                label='Recruiter'
+                                {...a11yProps(1)}
+                            />
+                        </Tabs>
+                    </AppBar>
 
-                            <Typography variant='h4' component='h3' align='center'>
-                                Welcome
-                            </Typography>
+                    <Typography variant='h4' component='h3' align='center' gutterBottom={true}>
+                        Welcome
+                    </Typography>
 
-                            <CustomizedSteppers activeStep={step} />
+                    {/* Registration Stage Stepper */}
+                    <Stepper iconStep steps={steps} activeStep={step} errorStep={stepError} icons={icons} />
 
-                            <form onSubmit={formik.handleSubmit}>
+                    {/* Form Data */}
+                    <form onSubmit={formik.handleSubmit}>
+                        {/* Step Tabs Switcher */}
+                        <SwipeableViews
+                            axis='x-reverse'
+                            index={value}
+                            onChangeIndex={handleChangeTab}
+                            slideStyle={{ overflow: 'hidden' }}
+                        >
+                            {/* General User */}
+                            <TabPanel value={value} index={0}>
+                                {/* Form Tab Swapper */}
                                 <SwipeableViews
                                     axis='x-reverse'
-                                    index={value}
-                                    onChangeIndex={handleChangeTab}
+                                    index={step}
+                                    onChangeIndex={handleChangeStep}
                                     slideStyle={{ overflow: 'hidden' }}
                                 >
-                                    {/* User */}
-                                    <TabPanel value={value} index={0}>
-                                        <SwipeableViews
-                                            axis='x-reverse'
-                                            index={step}
-                                            onChangeIndex={handleChangeStep}
-                                            slideStyle={{ overflow: 'hidden' }}
-                                        >
-                                            <TabPanel value={step} index={0}>
-                                                <Grid container spacing={2}>
-                                                    <Grid item md={6}>
-                                                        {/* Username */}
-                                                        <FormikTextField
-                                                            name='username'
-                                                            label='Username'
-                                                            props={formik}
-                                                            fullWidth
-                                                            autoFocus
-                                                            placeholder={undefined}
-                                                            disabled={undefined}
-                                                            prefix={undefined}
-                                                            suffix={undefined}
-                                                            noUnderline={undefined}
-                                                            helperTextProps={undefined}
-                                                        />
-
-                                                        {/* Email */}
-                                                        <FormikTextField
-                                                            name='email'
-                                                            label='Email'
-                                                            props={formik}
-                                                            fullWidth
-                                                            autoFocus
-                                                            placeholder={undefined}
-                                                            disabled={undefined}
-                                                            prefix={undefined}
-                                                            suffix={undefined}
-                                                            noUnderline={undefined}
-                                                            helperTextProps={undefined}
-                                                        />
-
-                                                        {/* Password */}
-                                                        <FormikTextField
-                                                            name='password'
-                                                            label='Password'
-                                                            type='password'
-                                                            props={formik}
-                                                            fullWidth
-                                                            placeholder={undefined}
-                                                            disabled={undefined}
-                                                            prefix={undefined}
-                                                            suffix={undefined}
-                                                            noUnderline={undefined}
-                                                            helperTextProps={undefined}
-                                                        />
-
-                                                        {/* Repeat Password */}
-                                                        <FormikTextField
-                                                            name='repeatPassword'
-                                                            label='Repeat Password'
-                                                            type='password'
-                                                            props={formik}
-                                                            fullWidth
-                                                            placeholder={undefined}
-                                                            disabled={undefined}
-                                                            prefix={undefined}
-                                                            suffix={undefined}
-                                                            noUnderline={undefined}
-                                                            helperTextProps={undefined}
-                                                        />
-
-                                                        {/* Gender */}
-                                                        <FormikRadio
-                                                            name='repeatPassword'
-                                                            label='Repeat Password'
-                                                            type='password'
-                                                            props={formik}
-                                                            fullWidth
-                                                            radioRow
-                                                            disabled={undefined}
-                                                            radioClassName={undefined}
-                                                            labelClass={undefined}
-                                                            defaultValue={'male'}
-                                                            options={genderOptions}
-                                                        />
-                                                    </Grid>
-                                                </Grid>
-                                            </TabPanel>
-
-                                            <TabPanel value={step} index={1}>
-                                                <Grid container spacing={2}>
-                                                    <Grid item md={6}>
-                                                        {/* Business Email */}
-                                                        <FormikTextField
-                                                            name='email'
-                                                            label='Business email'
-                                                            props={formik}
-                                                            fullWidth
-                                                            autoFocus
-                                                            placeholder={undefined}
-                                                            disabled={undefined}
-                                                            prefix={undefined}
-                                                            suffix={undefined}
-                                                            noUnderline={undefined} helperTextProps={undefined} />
-
-                                                        {/* Password */}
-                                                        <FormikTextField
-                                                            name='password'
-                                                            label='Password'
-                                                            type='password'
-                                                            props={formik}
-                                                            fullWidth
-                                                            placeholder={undefined}
-                                                            disabled={undefined}
-                                                            prefix={undefined}
-                                                            suffix={undefined}
-                                                            noUnderline={undefined} helperTextProps={undefined} />
-
-                                                        {/* Business Email */}
-                                                        <FormikTextField
-                                                            name='email'
-                                                            label='Business email'
-                                                            props={formik}
-                                                            fullWidth
-                                                            autoFocus
-                                                            placeholder={undefined}
-                                                            disabled={undefined}
-                                                            prefix={undefined}
-                                                            suffix={undefined}
-                                                            noUnderline={undefined} helperTextProps={undefined} />
-
-                                                        {/* Password */}
-                                                        <FormikTextField
-                                                            name='password'
-                                                            label='Password'
-                                                            type='password'
-                                                            props={formik}
-                                                            fullWidth
-                                                            placeholder={undefined}
-                                                            disabled={undefined}
-                                                            prefix={undefined}
-                                                            suffix={undefined}
-                                                            noUnderline={undefined} helperTextProps={undefined} />
-                                                    </Grid>
-                                                </Grid>
-                                            </TabPanel>
-                                        </SwipeableViews>
-
-                                        <Button onClick={(e) => handleChangeStep(e, step+1)}>Next</Button>
-                                        <Button onClick={(e) => handleChangeStep(e, step-1)}>Previous</Button>
-
+                                    {/* Step 1 - Account Data */}
+                                    <TabPanel value={step} index={0}>
                                         <Grid container spacing={2}>
-                                            <Grid item md={6}>
+                                            <Grid item sm={6} md={8}>
                                                 {/* Username */}
                                                 <FormikTextField
                                                     name='username'
                                                     label='Username'
                                                     props={formik}
                                                     fullWidth
-                                                    autoFocus
+                                                    autoFocus={false}
                                                     placeholder={undefined}
                                                     disabled={undefined}
                                                     prefix={undefined}
@@ -656,7 +396,6 @@ export default withApollo(({ currentUser, refetchCurrentUser, loadingCurrentUser
                                                     label='Email'
                                                     props={formik}
                                                     fullWidth
-                                                    autoFocus
                                                     placeholder={undefined}
                                                     disabled={undefined}
                                                     prefix={undefined}
@@ -694,28 +433,18 @@ export default withApollo(({ currentUser, refetchCurrentUser, loadingCurrentUser
                                                     noUnderline={undefined}
                                                     helperTextProps={undefined}
                                                 />
-
-                                                {/* Gender */}
-                                                <FormikRadio
-                                                    name='repeatPassword'
-                                                    label='Repeat Password'
-                                                    type='password'
-                                                    props={formik}
-                                                    fullWidth
-                                                    radioRow
-                                                    disabled={undefined}
-                                                    radioClassName={undefined}
-                                                    labelClass={undefined}
-                                                    defaultValue={'male'}
-                                                    options={genderOptions}
-                                                />
                                             </Grid>
+                                        </Grid>
+                                    </TabPanel>
 
-                                            <Grid item md={6}>
-                                                {/* Business Email */}
+                                    {/* Step 2 - Personal Data */}
+                                    <TabPanel value={step} index={1}>
+                                        <Grid container spacing={2}>
+                                            <Grid item sm={6} md={8}>
+                                                {/* First Name */}
                                                 <FormikTextField
-                                                    name='email'
-                                                    label='Business email'
+                                                    name='firstName'
+                                                    label='First Name'
                                                     props={formik}
                                                     fullWidth
                                                     autoFocus
@@ -727,8 +456,229 @@ export default withApollo(({ currentUser, refetchCurrentUser, loadingCurrentUser
                                                     helperTextProps={undefined}
                                                 />
 
-                                                {/* Password */}
+                                                {/* Other Names */}
                                                 <FormikTextField
+                                                    name='otherNames'
+                                                    label='Other Names'
+                                                    props={formik}
+                                                    fullWidth
+                                                    autoFocus
+                                                    placeholder={undefined}
+                                                    disabled={undefined}
+                                                    prefix={undefined}
+                                                    suffix={undefined}
+                                                    noUnderline={undefined}
+                                                    helperTextProps={undefined}
+                                                />
+
+                                                {/* Surname */}
+                                                <FormikTextField
+                                                    name='surname'
+                                                    label='Surname'
+                                                    props={formik}
+                                                    fullWidth
+                                                    autoFocus
+                                                    placeholder={undefined}
+                                                    disabled={undefined}
+                                                    prefix={undefined}
+                                                    suffix={undefined}
+                                                    noUnderline={undefined}
+                                                    helperTextProps={undefined}
+                                                />
+
+                                                {/* Gender */}
+                                                <FormikRadio
+                                                    name='gender'
+                                                    label='Gender'
+                                                    props={formik}
+                                                    fullWidth
+                                                    radioRow
+                                                    disabled={undefined}
+                                                    radioClassName={undefined}
+                                                    labelClass={undefined}
+                                                    defaultValue={formik.values.gender}
+                                                    options={genderOptions}
+                                                />
+                                            </Grid>
+                                        </Grid>
+                                    </TabPanel>
+
+                                    <TabPanel value={step} index={2}>
+                                        <Grid container spacing={2}>
+                                            <Grid item md={5}>
+                                                <FormikSelect
+                                                    name='recoveryQuestion'
+                                                    label='Recovery Question'
+                                                    formikProps={formik}
+                                                    disabled={undefined}
+                                                    options={securityQuestions}
+                                                    selectProps={undefined}
+                                                />
+
+                                                <FormikSelect
+                                                    name='recoveryQuestion'
+                                                    label='Recovery Question'
+                                                    formikProps={formik}
+                                                    disabled={undefined}
+                                                    options={securityQuestions}
+                                                    selectProps={undefined}
+                                                />
+
+                                                <FormikSelect
+                                                    name='recoveryQuestion'
+                                                    label='Recovery Question'
+                                                    formikProps={formik}
+                                                    disabled={undefined}
+                                                    options={securityQuestions}
+                                                    selectProps={undefined}
+                                                />
+                                            </Grid>
+
+                                            <Grid item md={7}>
+                                                {/* Answer */}
+                                                <FormikTextField
+                                                    name='recoveryQuestionAnswer'
+                                                    label='Answer'
+                                                    props={formik}
+                                                    fullWidth
+                                                    autoFocus
+                                                    placeholder={undefined}
+                                                    disabled={undefined}
+                                                    prefix={undefined}
+                                                    suffix={undefined}
+                                                    noUnderline={undefined}
+                                                    helperTextProps={undefined}
+                                                />
+
+                                                {/* Answer */}
+                                                <FormikTextField
+                                                    name='recoveryQuestionAnswer'
+                                                    label='Answer'
+                                                    props={formik}
+                                                    fullWidth
+                                                    autoFocus
+                                                    placeholder={undefined}
+                                                    disabled={undefined}
+                                                    prefix={undefined}
+                                                    suffix={undefined}
+                                                    noUnderline={undefined}
+                                                    helperTextProps={undefined}
+                                                />
+
+                                                {/* Answer */}
+                                                <FormikTextField
+                                                    name='recoveryQuestionAnswer'
+                                                    label='Answer'
+                                                    props={formik}
+                                                    fullWidth
+                                                    autoFocus
+                                                    placeholder={undefined}
+                                                    disabled={undefined}
+                                                    prefix={undefined}
+                                                    suffix={undefined}
+                                                    noUnderline={undefined}
+                                                    helperTextProps={undefined}
+                                                />
+                                            </Grid>
+                                        </Grid>
+                                    </TabPanel>
+
+                                    <TabPanel value={step} index={3}>
+                                        <Grid container spacing={2}>
+                                            <Grid item sm={6} md={8}>
+                                                <FormikSelect
+                                                    name='recoveryQuestion'
+                                                    label='Recovery Question'
+                                                    formikProps={formik}
+                                                    disabled={undefined}
+                                                    options={securityQuestions}
+                                                    selectProps={undefined}
+                                                />
+
+                                                {/* Answer */}
+                                                <FormikTextField
+                                                    name='recoveryQuestionAnswer'
+                                                    label='Answer'
+                                                    props={formik}
+                                                    fullWidth
+                                                    autoFocus
+                                                    placeholder={undefined}
+                                                    disabled={undefined}
+                                                    prefix={undefined}
+                                                    suffix={undefined}
+                                                    noUnderline={undefined}
+                                                    helperTextProps={undefined}
+                                                />
+
+                                                <FormikSelect
+                                                    name='recoveryQuestion'
+                                                    label='Recovery Question'
+                                                    formikProps={formik}
+                                                    disabled={undefined}
+                                                    options={securityQuestions}
+                                                    selectProps={undefined}
+                                                />
+
+                                                {/* Answer */}
+                                                <FormikTextField
+                                                    name='recoveryQuestionAnswer'
+                                                    label='Answer'
+                                                    props={formik}
+                                                    fullWidth
+                                                    autoFocus
+                                                    placeholder={undefined}
+                                                    disabled={undefined}
+                                                    prefix={undefined}
+                                                    suffix={undefined}
+                                                    noUnderline={undefined}
+                                                    helperTextProps={undefined}
+                                                />
+                                            </Grid>
+                                        </Grid>
+                                    </TabPanel>
+
+                                    <input type='submit' className='btnRegister' value='Register' />
+                                </SwipeableViews>
+
+                                <Grid container spacing={2} className={classes.buttonBox}>
+                                    <Button onClick={(e) => handleChangeStep(e, step - 1)} disabled={step === 0}>Previous</Button>
+                                    <Button onClick={(e) => handleChangeStep(e, step + 1)} disabled={step === 3}>Next</Button>
+                                </Grid>
+
+                                {/* <Grid container spacing={2}>
+                                            <Grid item md={6}>
+                                                {/* Username */}
+                                {/* <FormikTextField
+                                                    name='username'
+                                                    label='Username'
+                                                    props={formik}
+                                                    fullWidth
+                                                    autoFocus
+                                                    placeholder={undefined}
+                                                    disabled={undefined}
+                                                    prefix={undefined}
+                                                    suffix={undefined}
+                                                    noUnderline={undefined}
+                                                    helperTextProps={undefined}
+                                                /> */}
+
+                                {/* Email */}
+                                {/* <FormikTextField
+                                                    name='email'
+                                                    label='Email'
+                                                    props={formik}
+                                                    fullWidth
+                                                    autoFocus
+                                                    placeholder={undefined}
+                                                    disabled={undefined}
+                                                    prefix={undefined}
+                                                    suffix={undefined}
+                                                    noUnderline={undefined}
+                                                    helperTextProps={undefined}
+                                                /> */}
+
+                                {/* Password */}
+                                {/* <FormikTextField
                                                     name='password'
                                                     label='Password'
                                                     type='password'
@@ -740,10 +690,42 @@ export default withApollo(({ currentUser, refetchCurrentUser, loadingCurrentUser
                                                     suffix={undefined}
                                                     noUnderline={undefined}
                                                     helperTextProps={undefined}
-                                                />
+                                                /> */}
 
-                                                {/* Business Email */}
-                                                <FormikTextField
+                                {/* Repeat Password */}
+                                {/* <FormikTextField
+                                                    name='repeatPassword'
+                                                    label='Repeat Password'
+                                                    type='password'
+                                                    props={formik}
+                                                    fullWidth
+                                                    placeholder={undefined}
+                                                    disabled={undefined}
+                                                    prefix={undefined}
+                                                    suffix={undefined}
+                                                    noUnderline={undefined}
+                                                    helperTextProps={undefined}
+                                                /> */}
+
+                                {/* Gender */}
+                                {/* <FormikRadio
+                                                    name='repeatPassword'
+                                                    label='Repeat Password'
+                                                    type='password'
+                                                    props={formik}
+                                                    fullWidth
+                                                    radioRow
+                                                    disabled={undefined}
+                                                    radioClassName={undefined}
+                                                    labelClass={undefined}
+                                                    defaultValue={'male'}
+                                                    options={genderOptions}
+                                                /> */}
+                                {/* </Grid> */}
+
+                                {/* <Grid item md={6}> */}
+                                {/* Business Email */}
+                                {/* <FormikTextField
                                                     name='email'
                                                     label='Business email'
                                                     props={formik}
@@ -755,10 +737,40 @@ export default withApollo(({ currentUser, refetchCurrentUser, loadingCurrentUser
                                                     suffix={undefined}
                                                     noUnderline={undefined}
                                                     helperTextProps={undefined}
-                                                />
+                                                /> */}
 
-                                                {/* Password */}
-                                                <FormikTextField
+                                {/* Password */}
+                                {/* <FormikTextField
+                                                    name='password'
+                                                    label='Password'
+                                                    type='password'
+                                                    props={formik}
+                                                    fullWidth
+                                                    placeholder={undefined}
+                                                    disabled={undefined}
+                                                    prefix={undefined}
+                                                    suffix={undefined}
+                                                    noUnderline={undefined}
+                                                    helperTextProps={undefined}
+                                                /> */}
+
+                                {/* Business Email */}
+                                {/* <FormikTextField
+                                                    name='email'
+                                                    label='Business email'
+                                                    props={formik}
+                                                    fullWidth
+                                                    autoFocus
+                                                    placeholder={undefined}
+                                                    disabled={undefined}
+                                                    prefix={undefined}
+                                                    suffix={undefined}
+                                                    noUnderline={undefined}
+                                                    helperTextProps={undefined}
+                                                /> */}
+
+                                {/* Password */}
+                                {/* <FormikTextField
                                                     name='password'
                                                     label='Password'
                                                     type='password'
@@ -790,140 +802,147 @@ export default withApollo(({ currentUser, refetchCurrentUser, loadingCurrentUser
                                                 </div>
                                                 <input type='submit' className='btnRegister' value='Register' />
                                             </Grid>
-                                        </Grid>
-                                    </TabPanel>
+                                        </Grid> */}
+                            </TabPanel>
 
-                                    <TabPanel value={value} index={1}>
-                                        <Grid container spacing={2}>
-                                            <Grid item md={6}>
-                                                {/* Username */}
-                                                <FormikTextField
-                                                    name='username'
-                                                    label='Username'
-                                                    props={formik}
-                                                    fullWidth
-                                                    autoFocus
-                                                    placeholder={undefined}
-                                                    disabled={undefined}
-                                                    prefix={undefined}
-                                                    suffix={undefined}
-                                                    noUnderline={undefined} helperTextProps={undefined} />
+                            {/* Recruiter User */}
+                            <TabPanel value={value} index={1}>
+                                <Grid container spacing={2}>
+                                    <Grid item md={6}>
+                                        {/* Username */}
+                                        <FormikTextField
+                                            name='username'
+                                            label='Username'
+                                            props={formik}
+                                            fullWidth
+                                            autoFocus
+                                            placeholder={undefined}
+                                            disabled={undefined}
+                                            prefix={undefined}
+                                            suffix={undefined}
+                                            noUnderline={undefined}
+                                            helperTextProps={undefined} />
 
-                                                {/* Email */}
-                                                <FormikTextField
-                                                    name='email'
-                                                    label='Email'
-                                                    props={formik}
-                                                    fullWidth
-                                                    autoFocus
-                                                    placeholder={undefined}
-                                                    disabled={undefined}
-                                                    prefix={undefined}
-                                                    suffix={undefined}
-                                                    noUnderline={undefined} helperTextProps={undefined} />
+                                        {/* Email */}
+                                        <FormikTextField
+                                            name='email'
+                                            label='Email'
+                                            props={formik}
+                                            fullWidth
+                                            autoFocus
+                                            placeholder={undefined}
+                                            disabled={undefined}
+                                            prefix={undefined}
+                                            suffix={undefined}
+                                            noUnderline={undefined}
+                                            helperTextProps={undefined} />
 
-                                                {/* Password */}
-                                                <FormikTextField
-                                                    name='password'
-                                                    label='Password'
-                                                    type='password'
-                                                    props={formik}
-                                                    fullWidth
-                                                    placeholder={undefined}
-                                                    disabled={undefined}
-                                                    prefix={undefined}
-                                                    suffix={undefined}
-                                                    noUnderline={undefined} helperTextProps={undefined} />
+                                        {/* Password */}
+                                        <FormikTextField
+                                            name='password'
+                                            label='Password'
+                                            type='password'
+                                            props={formik}
+                                            fullWidth
+                                            placeholder={undefined}
+                                            disabled={undefined}
+                                            prefix={undefined}
+                                            suffix={undefined}
+                                            noUnderline={undefined}
+                                            helperTextProps={undefined} />
 
-                                                {/* Repeat Password */}
-                                                <FormikTextField
-                                                    name='repeatPassword'
-                                                    label='Repeat Password'
-                                                    type='password'
-                                                    props={formik}
-                                                    fullWidth
-                                                    placeholder={undefined}
-                                                    disabled={undefined}
-                                                    prefix={undefined}
-                                                    suffix={undefined}
-                                                    noUnderline={undefined} helperTextProps={undefined} />
+                                        {/* Repeat Password */}
+                                        <FormikTextField
+                                            name='repeatPassword'
+                                            label='Repeat Password'
+                                            type='password'
+                                            props={formik}
+                                            fullWidth
+                                            placeholder={undefined}
+                                            disabled={undefined}
+                                            prefix={undefined}
+                                            suffix={undefined}
+                                            noUnderline={undefined}
+                                            helperTextProps={undefined} />
 
-                                                {/* Gender */}
-                                                <FormikRadio
-                                                    name='repeatPassword'
-                                                    label='Repeat Password'
-                                                    type='password'
-                                                    props={formik}
-                                                    fullWidth
-                                                    radioRow
-                                                    disabled={undefined}
-                                                    radioClassName={undefined}
-                                                    labelClass={undefined}
-                                                    defaultValue={undefined}
-                                                    options={genderOptions}
-                                                />
-                                            </Grid>
+                                        {/* Gender */}
+                                        <FormikRadio
+                                            name='repeatPassword'
+                                            label='Repeat Password'
+                                            type='password'
+                                            props={formik}
+                                            fullWidth
+                                            radioRow
+                                            disabled={undefined}
+                                            radioClassName={undefined}
+                                            labelClass={undefined}
+                                            defaultValue={undefined}
+                                            options={genderOptions}
+                                        />
+                                    </Grid>
 
-                                            <Grid item md={6}>
-                                                {/* Business Email */}
-                                                <FormikTextField
-                                                    name='email'
-                                                    label='Business email'
-                                                    props={formik}
-                                                    fullWidth
-                                                    autoFocus
-                                                    placeholder={undefined}
-                                                    disabled={undefined}
-                                                    prefix={undefined}
-                                                    suffix={undefined}
-                                                    noUnderline={undefined} helperTextProps={undefined} />
+                                    <Grid item md={6}>
+                                        {/* Business Email */}
+                                        <FormikTextField
+                                            name='email'
+                                            label='Business email'
+                                            props={formik}
+                                            fullWidth
+                                            autoFocus
+                                            placeholder={undefined}
+                                            disabled={undefined}
+                                            prefix={undefined}
+                                            suffix={undefined}
+                                            noUnderline={undefined}
+                                            helperTextProps={undefined} />
 
-                                                {/* Password */}
-                                                <FormikTextField
-                                                    name='password'
-                                                    label='Password'
-                                                    type='password'
-                                                    props={formik}
-                                                    fullWidth
-                                                    placeholder={undefined}
-                                                    disabled={undefined}
-                                                    prefix={undefined}
-                                                    suffix={undefined}
-                                                    noUnderline={undefined} helperTextProps={undefined} />
+                                        {/* Password */}
+                                        <FormikTextField
+                                            name='password'
+                                            label='Password'
+                                            type='password'
+                                            props={formik}
+                                            fullWidth
+                                            placeholder={undefined}
+                                            disabled={undefined}
+                                            prefix={undefined}
+                                            suffix={undefined}
+                                            noUnderline={undefined}
+                                            helperTextProps={undefined} />
 
-                                                {/* Business Email */}
-                                                <FormikTextField
-                                                    name='email'
-                                                    label='Business email'
-                                                    props={formik}
-                                                    fullWidth
-                                                    autoFocus
-                                                    placeholder={undefined}
-                                                    disabled={undefined}
-                                                    prefix={undefined}
-                                                    suffix={undefined}
-                                                    noUnderline={undefined} helperTextProps={undefined} />
+                                        {/* Business Email */}
+                                        <FormikTextField
+                                            name='email'
+                                            label='Business email'
+                                            props={formik}
+                                            fullWidth
+                                            autoFocus
+                                            placeholder={undefined}
+                                            disabled={undefined}
+                                            prefix={undefined}
+                                            suffix={undefined}
+                                            noUnderline={undefined}
+                                            helperTextProps={undefined} />
 
-                                                {/* Password */}
-                                                <FormikTextField
-                                                    name='password'
-                                                    label='Password'
-                                                    type='password'
-                                                    props={formik}
-                                                    fullWidth
-                                                    placeholder={undefined}
-                                                    disabled={undefined}
-                                                    prefix={undefined}
-                                                    suffix={undefined}
-                                                    noUnderline={undefined} helperTextProps={undefined} />
-                                            </Grid>
-                                        </Grid>
-                                    </TabPanel>
-                                </SwipeableViews>
-                            </form>
-                        </Grid>
-                    </Grid>
-                </Container>
+                                        {/* Password */}
+                                        <FormikTextField
+                                            name='password'
+                                            label='Password'
+                                            type='password'
+                                            props={formik}
+                                            fullWidth
+                                            placeholder={undefined}
+                                            disabled={undefined}
+                                            prefix={undefined}
+                                            suffix={undefined}
+                                            noUnderline={undefined}
+                                            helperTextProps={undefined} />
+                                    </Grid>
+                                </Grid>
+                            </TabPanel>
+                        </SwipeableViews>
+                    </form>
+                </Grid>
             </Section>
         </Wrapper>
     );

@@ -8,6 +8,11 @@ import RadioGroup from '@mui/material/RadioGroup';
 import FormControl from '@mui/material/FormControl';
 import FormControlLabel from '@mui/material/FormControlLabel';
 
+interface RadioItem {
+    label: string
+    value: string
+};
+
 // Component
 const FormikRadio = ({
     props,
@@ -27,7 +32,7 @@ const FormikRadio = ({
     const handleChange = ({ target }) => {
         if (target.value === 'true' || target.value === 'false') return props.setFieldValue(name, target.value);
         if (target.value === 'null') return props.setFieldValue(name, target.value = 'null');
-        props.setFieldValue(name, Number(target.value));
+        props.setFieldValue(name,target.value);
     };
 
     return (
@@ -42,11 +47,11 @@ const FormikRadio = ({
             </FormLabel>
 
             <RadioGroup row={radioRow} className={radioClassName} name={name} value={values[name]} onChange={handleChange}>
-                {options.map((item, index) => {
+                {options.map((item: RadioItem, index: number) => {
                     return (
                         <FormControlLabel
                             key={`${name}${index}`}
-                            checked={index + 1 === defaultValue}
+                            checked={item.value === defaultValue}
                             value={item.value.toString()}
                             control={<Radio />}
                             label={item.label}

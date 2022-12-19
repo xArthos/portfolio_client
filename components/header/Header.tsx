@@ -22,7 +22,7 @@ import HeaderLoginSignUp from './HeaderLoginSignUp';
 
 const useStyles = makeStyles(({ palette }) => ({
   header: {
-    position: 'sticky',
+    // position: 'sticky',
     width: '100%',
     top: 0,
     left: 0,
