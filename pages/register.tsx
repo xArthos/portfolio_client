@@ -314,7 +314,7 @@ export default withApollo(({ currentUser, refetchCurrentUser, loadingCurrentUser
                     </Typography>
 
                     <Typography variant='body1' component='p'>
-                        You are 30 seconds away from earning your own money!
+                        The login form is in development!
                     </Typography>
 
                     <Button className={classes.submitButton} type='submit' >Submit</Button>

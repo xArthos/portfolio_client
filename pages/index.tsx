@@ -22,7 +22,7 @@ export default withApollo(({ currentUser, refetchCurrentUser, loadingCurrentUser
         subtitle={
           <>
             this site is still in development, you can take a look in my Portfolio in the&nbsp;
-            <Link href='https://xarthos.github.io/Portfolio' target='_blank'>
+            <Link href='https://xarthos.github.io' target='_blank'>
               GitHub
             </Link> webpage.
 
