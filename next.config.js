@@ -1,31 +1,37 @@
 // Modules
-const withPlugins = require('next-compose-plugins');
-const optimizedImages = require('next-optimized-images');
-const withCustomBabelConfigFile = require('next-plugin-custom-babel-config');
 const config = require('./config.d.ts');
-const path = require('path');
+const { PHASE_DEVELOPMENT_SERVER } = require('next/constants')
 
-module.exports = withPlugins(
-    [
-        [withCustomBabelConfigFile, { babelConfigFile: path.resolve('./babel.config.js') }],
-        [optimizedImages, { handleImages: ['jpeg', 'png', 'ico'] }]
-    ],
-    {
-        webpack: (config) => {
-            config.module.rules.push({
-                test: /\.svg$/,
-                use: ['@svgr/webpack']
-            });
+const nextConfig = {
+    webpack: (config) => {
+        config.module.rules.push({
+            test: /\.svg$/,
+            use: ['@svgr/webpack']
+        });
 
-            return config;
-        },
+        return config;
+    },
+    serverRuntimeConfig: config.serverRuntimeConfig,
+    publicRuntimeConfig: config.publicRuntimeConfig,
+    images: {
+        domains: [
+            'localhost'
+        ]
+    },
+    env: {
+        customKey: 'my-value',
+    },
+    basePath: '',
+};
 
-        serverRuntimeConfig: config.serverRuntimeConfig,
-        publicRuntimeConfig: config.publicRuntimeConfig,
-        images: {
-            domains: [
-                'localhost'
-            ]
+module.exports = (phase, { defaultConfig }) => {
+    if (phase === PHASE_DEVELOPMENT_SERVER) {
+        return {
+            ...nextConfig
         }
     }
-);
+
+    return {
+        ...nextConfig
+    }
+};
