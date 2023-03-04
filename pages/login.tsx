@@ -6,13 +6,13 @@ import { useMutation } from '@apollo/react-hooks';
 
 // UI
 import Grid from '@mui/material/Grid';
-import Button from '@mui/material/Button';
 
 // Components
 import Link from '../components/Link';
-// import Button from '../components/Button';
+import Alert from '@mui/material/Alert';
 import Wrapper from '../components/Wrapper';
 import Section from '../components/Section';
+import CustomButton from '../components/CustomButton';
 import FormikTextField from '../components/formik/FormikTextField';
 
 // Utils
@@ -23,28 +23,31 @@ import withApollo from '../lib/withApollo';
 import { login } from '../lib/utils/userDataUtils';
 import { areRequired } from '../utils/validation';
 
-const Login = ({ query, currentUser, loadingCurrentUser, refetchCurrentUser }) => {
+const Login = ({ currentUser, loadingCurrentUser, refetchCurrentUser }) => {
     // Apollo - Mutations
-    const [logIn, { loading }] = useMutation(login);
+    const [logIn, { loading, data }] = useMutation(login);
 
     const formik = useFormik({
         onSubmit: async (values, { setFieldError }) => {
-            console.log('Test login')
             try {
                 const { data: { logIn: login } } = await logIn({
                     variables: values
                 });
 
-                if (login)
+                if (login) {
                     localStorage.setItem('devArthosPortfolio', login);
-                refetchCurrentUser();
-                Router.push(
-                    '/',
-                    `/`
-                );
-            } catch (e) {
-                console.error(e);
-                setFieldError('password', 'Wrong credentials.');
+                    refetchCurrentUser();
+                    Router.push(
+                        '/',
+                        `/`
+                    );
+                };
+            } catch (error) {
+                console.error(error.graphQLErrors);
+                if (error.message === 'User not found') {
+                    setFieldError('password', ' ');
+                    setFieldError('email', ' ');
+                };
             };
         },
         // validate: values => {
@@ -107,16 +110,23 @@ const Login = ({ query, currentUser, loadingCurrentUser, refetchCurrentUser }) =
                             helperTextProps={undefined}
                         />
 
-                        <Button
+                        <CustomButton
                             type='submit'
-                        // fullWidth
-                        // loading={loading}
-                        // successful={!!data}
-                        // disabled={!(formik.isValid && formik.dirty)}
+                            size='small'
+                            loading={loading}
+                            successful={!!data}
+                            disabled={!(formik.isValid && formik.dirty)}
+                            props={undefined}
+                            defaultComponent={'button'}
+                            marginTop={20}
                         >
                             Login
-                        </Button>
+                        </CustomButton>
                     </form>
+                </Grid>
+
+                <Grid item xs={12}>
+                    <Alert severity='error'>This is an error alert — check it out!</Alert>
                 </Grid>
 
                 <Grid item xs={12}>
@@ -135,8 +145,9 @@ const Login = ({ query, currentUser, loadingCurrentUser, refetchCurrentUser }) =
     );
 };
 
-Login.getInitialProps = async ({ query }) => {
-    return { query };
-};
+// ? Not needed for the moment
+// Login.getInitialProps = async ({ query }) => {
+//     return { query };
+// };
 
 export default withApollo(Login);

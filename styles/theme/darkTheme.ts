@@ -129,7 +129,7 @@ const darkTheme: ThemeOptions = {
             styleOverrides: {
                 input: {
                     '&:-webkit-autofill': {
-                        '-webkit-box-shadow': '0 0 0 100px #272727 inset !important'
+                        WebkitBoxShadow: '0 0 0 100px #272727 inset !important'
                     }
                 }
             }
@@ -147,6 +147,13 @@ const darkTheme: ThemeOptions = {
                 root: {
                     marginTop: 16,
                     marginBottom: 8
+                }
+            }
+        },
+        MuiButton: {
+            styleOverrides: {
+                root: {
+                    minHeight: 30.75
                 }
             }
         }

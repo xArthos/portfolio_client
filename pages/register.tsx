@@ -32,11 +32,11 @@ import ReportGmailerrorredIcon from '@mui/icons-material/ReportGmailerrorred';
 
 // Utils
 import validateEmail from '../utils/validateEmail';
+import { areRequired } from '../utils/validation';
 
 // Apollo
 import withApollo from '../lib/withApollo';
 import { login } from '../lib/utils/userDataUtils';
-import { areRequired } from '../utils/validation';
 
 const useStyles = makeStyles(({ palette }) => ({
     register: {

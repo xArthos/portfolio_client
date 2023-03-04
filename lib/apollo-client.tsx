@@ -18,7 +18,6 @@ import { getCurrentUserQuery } from './utils/userDataUtils';
 
 // Config
 
-
 // type CustomGetServerSideProps<
 //     P extends { [key: string]: any } = { [key: string]: any },
 //     Q extends ParsedUrlQuery = ParsedUrlQuery
@@ -37,7 +36,7 @@ type GetServerSidePropsContext<Q extends ParsedUrlQuery = ParsedUrlQuery> = {
     locale: string // This is where the magic happens.
     locales?: string[]
     defaultLocale?: string
-}
+};
 
 const APOLLO_STATE_PROP_NAME = 'devArthosApolloState';
 

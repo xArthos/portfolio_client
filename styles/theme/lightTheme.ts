@@ -140,6 +140,13 @@ const lightTheme: ThemeOptions = {
                     marginBottom: 8
                 }
             }
+        },
+        MuiButton: {
+            styleOverrides: {
+                root: {
+                    minHeight: 30.75
+                }
+            }
         }
     }
 };
