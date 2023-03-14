@@ -42,11 +42,10 @@ const Login = ({ currentUser, loadingCurrentUser, refetchCurrentUser }) => {
                         `/`
                     );
                 };
-            } catch (error) {
-                console.error(error.graphQLErrors);
-                if (error.message === 'User not found') {
-                    setFieldError('password', ' ');
-                    setFieldError('email', ' ');
+            } catch (tryError) {
+                console.log(tryError.graphQLErrors);
+                if (tryError.message === 'User not found') {
+                    setFieldError('email', 'This e-mail is not registred.');
                 };
             };
         },

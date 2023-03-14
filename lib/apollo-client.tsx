@@ -42,15 +42,15 @@ const APOLLO_STATE_PROP_NAME = 'devArthosApolloState';
 
 let apolloClient: ApolloClient<NormalizedCacheObject> | undefined;
 
-export const createApolloClient = (headers: IncomingHttpHeaders | null = null) => {
-    // isomorphic fetch for passing the cookies along with each GraphQL request
+const createApolloClient = (headers: IncomingHttpHeaders | null = null) => {
+    // Isomorphic fetch for passing the cookies along with each GraphQL request
     const enhancedFetch = async (url: RequestInfo, init: RequestInit) => {
         const response = await fetch(url, {
             ...init,
             headers: {
                 ...init.headers,
                 'Access-Control-Allow-Origin': '*',
-                // here we pass the cookie along for each request
+                // Here we pass the cookie along for each request
                 Cookie: headers?.cookie ?? ''
             }
         });
@@ -62,7 +62,7 @@ export const createApolloClient = (headers: IncomingHttpHeaders | null = null) =
         uri: process.env.NODE_ENV === 'development' ? 'http://localhost:4000/graphql' : 'https://serverxarthos.vercel.app/graphql',
         // Make sure that CORS and cookies work
         fetchOptions: {
-            mode: 'cors' // 'no-cors'
+            mode: 'cors' // or 'no-cors'
         },
         credentials: 'include',
         fetch: enhancedFetch
@@ -84,18 +84,18 @@ export const createApolloClient = (headers: IncomingHttpHeaders | null = null) =
     return new ApolloClient({
         ssrMode: typeof window === 'undefined',
         link: ApolloLink.from([
-            onError(({ graphQLErrors, networkError }) => {
-                if (graphQLErrors)
+            onError(({ graphQLErrors, networkError, operation }) => {
+                if (graphQLErrors) {
                     graphQLErrors.forEach(({ message, locations, path }) => {
                         console.error(
                             `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`
                         );
-                    }
-                    )
-                if (networkError)
-                    console.error(
-                        `[Network error]: ${networkError}. Backend is unreachable. Is it running?`
-                    )
+                    });
+                };
+
+                if (networkError) {
+                    console.error(`[Network error]: ${networkError}`)
+                };
             }),
             // This uses apollo-link-http under the hood, so all the options here come from that package
             authLink.concat(httpLink)
@@ -115,7 +115,7 @@ interface CustomPageProps { // <--- your custom page props
     props: Object
 }
 
-export const initializeApollo = (
+const initializeApollo = (
     { headers, initialState }: IInitializeApollo = {
         headers: null,
         initialState: null
@@ -152,7 +152,7 @@ export const initializeApollo = (
     return _apolloClient;
 };
 
-export const addApolloState = (
+const addApolloState = (
     client: ApolloClient<NormalizedCacheObject>,
     pageProps: AppProps<CustomPageProps>['pageProps']
 ) => {
