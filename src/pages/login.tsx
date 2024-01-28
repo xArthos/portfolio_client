@@ -60,7 +60,8 @@ const Login: NextPageWithLayout<Test> = ({ currentUser, loadingCurrentUser, refe
                     localStorage.setItem('devArthosPortfolio', loginToken);
                     refetchCurrentUser();
 
-                    if (!errorCurrentUser) {
+                    if (!errorCurrentUser && !loading && (currentUser && currentUser !== null)) {
+                        console.log(errorCurrentUser , loading , currentUser)
                         resetForm();
                         Router.push('/user/dashboard');
                     };

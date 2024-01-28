@@ -58,7 +58,14 @@ const UserCheck = ({ isPrivateRoute, children }) => {
             </Wrapper>
         );
     } else {
-        return React.cloneElement(children, { currentUser: (currentUser && currentUser !== null) ? currentUser : undefined, loadingCurrentUser: loading, refetchCurrentUser: refetch, errorCurrentUser: error });
+        return React.cloneElement(children, {
+            currentUser: (currentUser && currentUser !== null)
+                ? currentUser
+                : undefined,
+            loadingCurrentUser: loading,
+            refetchCurrentUser: refetch,
+            errorCurrentUser: error
+        });
     };
 };
 
